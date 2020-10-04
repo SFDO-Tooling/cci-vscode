@@ -10,7 +10,7 @@ export function activate(context: vscode.ExtensionContext) {
 
     vscode.window.registerTreeDataProvider("cciFlowsView", new FlowDataProvider());
     vscode.commands.registerCommand("cciFlowsView.selectNode", (item: vscode.TreeItem) => {
-        outputChannel.appendLine(`Output: ${item.label}`)
+        outputChannel.appendLine(`Output: ${item.label}`);
     });
 
 
@@ -38,23 +38,26 @@ export class FlowDataProvider implements vscode.TreeDataProvider<vscode.TreeItem
     }
 
     getChildren(element?: vscode.TreeItem): Thenable<Flow[]> | Flow[] | null {
-        if (element === undefined) {
-            // exec('cci flow list --json', (error: string, stdout: string, stderr: string) => {
-            //     let flowJson = JSON.parse(stdout);
-            //     for (let i = 0; i < flowJson.length; ++i) {
-            //         let f = new Flow(flowJson[i]['name'], flowJson[i]['description'], vscode.TreeItemCollapsibleState.None);
-            //         // this command will run on click of the flow
-            //         f.command = {
-            //             command: "cciFlowsView.selectNode",
-            //             title: "Select Node",
-            //             arguments: [f]
-            //         }
-            //         this.flows.push(f);
-            //     }
-            // });
-            // // Problem is that we need to wait here for exec() to complete
-            // // I believe this involves returning a promise via a Thenable<T>A
-            // return new Promise<Flow[]>(resolve => resolve(this.flows));
+
+        // This should be changed to if (element === undefined)
+        // but currently isn't working
+        if (false) {
+            exec('cci flow list --json', (error, stdout, stderr) => {
+                let flowJson = JSON.parse(stdout);
+                for (let i = 0; i < flowJson.length; ++i) {
+                    let f = new Flow(flowJson[i]['name'], flowJson[i]['description'], vscode.TreeItemCollapsibleState.None);
+                    // this command will run on click of the flow
+                    f.command = {
+                        command: "cciFlowsView.selectNode",
+                        title: "Select Node",
+                        arguments: [f]
+                    };
+                    this.flows.push(f);
+                }
+            });
+            // Problem: we need to wait here for exec() to complete
+            // I believe this involves returning a promise via a Thenable<T>A
+            return new Promise<Flow[]>(resolve => resolve(this.flows));
         }
         return [
             new Flow('ci_beta','Continuous integration tests with Beta dependencies.', vscode.TreeItemCollapsibleState.None),
@@ -64,20 +67,17 @@ export class FlowDataProvider implements vscode.TreeDataProvider<vscode.TreeItem
 }
 
 export class Flow extends vscode.TreeItem {
-
     constructor(
-        // label == name of flow
         public readonly name: string,
         public readonly tooltip: string,
         public readonly collapsibleState: vscode.TreeItemCollapsibleState
     ) {
         super(name, collapsibleState);
     }
-
-    iconPath = {
-        light: path.join(__filename,'..', 'media', 'images', 'flow.svg'),
-        dark: path.join(__filename, '..', 'media', 'images', 'flow.svg')
-    };
+    
+    // TODO: get MS coddicons working
+    // https://github.com/microsoft/vscode-codicons
+    iconPath = vscode.ThemeIcon.File;
 }
 
 
