@@ -10,14 +10,33 @@
         "Other"
     ],
     "activationEvents": [
-        "onView:cciFlowsView"
+        "onView:cciOrgView",
+        "onView:cciTaskView",
+        "onView:cciFlowView"
     ],
     "main": "./out/extension.js",
     "contributes": {
-        "views": {
-            "explorer": [
+        "viewsContainers": {
+            "activitybar": [
                 {
-                    "id": "cciFlowsView",
+                    "id": "cci-explorer",
+                    "title": "CumulusCI Explorer", 
+                    "icon": "media/images/dep.svg"
+                }
+            ]
+        },
+        "views": {
+            "cci-explorer": [
+                {
+                    "id": "cciOrgView",
+                    "name": "Orgs"
+                },
+                {
+                    "id": "cciTaskView",
+                    "name": "Tasks"
+                },
+                {
+                    "id": "cciFlowView",
                     "name": "Flows"
                 }
             ]
