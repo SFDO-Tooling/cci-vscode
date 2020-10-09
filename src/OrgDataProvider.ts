@@ -34,6 +34,8 @@ export class OrgDataProvider implements vscode.TreeDataProvider<Org> {
 
 
 export class Org extends vscode.TreeItem {
+    public readonly contextValue = 'org';
+
     constructor(
         public readonly name: string,
         public readonly tooltip: string, // path/to/org.json
@@ -42,7 +44,7 @@ export class Org extends vscode.TreeItem {
         super(name, collapsibleState);
     }
 
-    // TODO: get codicons working (beaker looks neat)
+    // TODO: get codicons working 
     // https://microsoft.github.io/vscode-codicons/dist/codicon.html
     iconPath = vscode.ThemeIcon.File;
 }

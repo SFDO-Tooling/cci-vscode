@@ -18,7 +18,7 @@ export class TaskDataProvider implements vscode.TreeDataProvider<Task> {
         return element;
     }
 
-    getChildren(element?: vscode.TreeItem): Thenable<Org[]> | Task[] | null {
+    getChildren(element?: vscode.TreeItem): Thenable<Task[]> | Task[] | null {
         return [
             new Task('github_automerge_main', 'Merges commits to the main branch into feature branches.', vscode.TreeItemCollapsibleState.None),
             new Task('robot', 'Runs a Robot Framework test from a .robot file', vscode.TreeItemCollapsibleState.None),
@@ -32,6 +32,8 @@ export class TaskDataProvider implements vscode.TreeDataProvider<Task> {
 
 
 export class Task extends vscode.TreeItem {
+    public readonly contextValue = 'task';
+
     constructor(
         public readonly name: string,
         public readonly tooltip: string, // path/to/org.json
@@ -40,7 +42,7 @@ export class Task extends vscode.TreeItem {
         super(name, collapsibleState);
     }
 
-    // TODO: get codicons working (beaker looks neat)
+    // TODO: get codicons working
     // https://microsoft.github.io/vscode-codicons/dist/codicon.html
     iconPath = vscode.ThemeIcon.File;
 }

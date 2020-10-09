@@ -53,14 +53,19 @@ export class FlowDataProvider implements vscode.TreeDataProvider<Flow> {
 
 
 export class Flow extends vscode.TreeItem {
+    public readonly contextValue = 'flow';
+
     constructor(
         public readonly name: string,
         public readonly tooltip: string, // Flow Description
-        public readonly collapsibleState: vscode.TreeItemCollapsibleState
+        collapsibleState: vscode.TreeItemCollapsibleState
     ) {
         super(name, collapsibleState);
     }
 
+    run(output: vscode.OutputChannel): void {
+        output.appendLine(`Running: cci flow run ${this.name}`);
+    }
     // TODO: get codicons working (beaker looks neat)
     // https://microsoft.github.io/vscode-codicons/dist/codicon.html
     iconPath = vscode.ThemeIcon.File;

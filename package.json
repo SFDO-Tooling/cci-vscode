@@ -41,6 +41,42 @@
                 }
             ]
         },
+        "menus": {
+            "view/title": [
+                {
+                    "group": "navigation",
+                    "when": "view == cciOrgView",
+                    "command": "cci.refreshOrgs"
+                },
+                {
+                    "group": "navigation",
+                    "when": "view == cciTaskView",
+                    "command": "cci.refreshTasks"
+                },
+                {
+                    "group": "navigation",
+                    "when": "view == cciFlowView",
+                    "command": "cci.refreshFlows"
+                }
+            ],
+            "view/item/context": [
+                {
+                    "group": "inline",
+                    "command": "cci.openOrg",
+                    "when": "view == cciOrgView && viewItem == org"
+                },
+                {
+                    "group": "inline",
+                    "command": "cci.runTask",
+                    "when": "view == cciTaskView && viewItem == task"
+                },
+                {
+                    "group": "inline",
+                    "command": "cci.runFlow",
+                    "when": "view == cciFlowView && viewItem == flow"
+                }
+            ]
+        },
         "commands": [
             {
                 "command": "cci.refreshOrgs",
@@ -65,27 +101,32 @@
                     "light": "resources/light/refresh.svg",
                     "dark": "resources/dark/refresh.svg"
                 }
-            }
-        ],
-        "menus": {
-            "view/title": [
-                {
-                    "group": "navigation",
-                    "when": "view == cciOrgView",
-                    "command": "cci.refreshOrgs"
-                },
-                {
-                    "group": "navigation",
-                    "when": "view == cciTaskView",
-                    "command": "cci.refreshTasks"
-                },
-                {
-                    "group": "navigation",
-                    "when": "view == cciFlowView",
-                    "command": "cci.refreshFlows"
+            },
+            {
+                "command": "cci.openOrg",
+                "title": "Open Org in Browser",
+                "icon": {
+                    "light": "resources/light/run.svg",
+                    "dark": "resources/dark/run.svg"
                 }
-            ]
-        }
+            },
+            {
+                "command": "cci.runTask",
+                "title": "Run Task",
+                "icon": {
+                    "light": "resources/light/run.svg",
+                    "dark": "resources/dark/run.svg"
+                }
+            },
+            {
+                "command": "cci.runFlow",
+                "title": "Run Flow",
+                "icon": {
+                    "light": "resources/light/run.svg",
+                    "dark": "resources/dark/run.svg"
+                }
+            }
+        ]
     },
     "scripts": {
         "vscode:prepublish": "yarn run compile",

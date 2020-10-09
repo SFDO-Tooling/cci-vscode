@@ -1,8 +1,8 @@
 import * as path from 'path';
 import * as vscode from 'vscode';
-import { FlowDataProvider } from './FlowDataProvider';
-import { OrgDataProvider } from './OrgDataProvider';
-import { TaskDataProvider } from './TaskDataProvider';
+import { Flow, FlowDataProvider } from './FlowDataProvider';
+import { Org, OrgDataProvider } from './OrgDataProvider';
+import { Task, TaskDataProvider } from './TaskDataProvider';
 
 
 // called on activation of extension
@@ -25,6 +25,21 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand('cci.refreshOrgs', () => orgDataProvider.refresh());
     vscode.commands.registerCommand('cci.refreshTasks', () => taskDataProvider.refresh());
     vscode.commands.registerCommand('cci.refreshFlows', () => flowDataProvider.refresh());
+
+    vscode.commands.registerCommand('cci.runFlow', (flow: Flow) => {
+        vscode.window.showInformationMessage(`Running Flow: ${flow.name}`);
+        // TODO: Open popup window and let user select which org they want to run flow against
+        // TODO: Execute `cci flow run ${flow.name} 
+    });
+    vscode.commands.registerCommand('cci.runTask', (task: Task) => {
+        vscode.window.showInformationMessage(`Running Task: ${task.name}`);
+    });
+    vscode.commands.registerCommand('cci.openOrg', (org: Org) => {
+        vscode.window.showInformationMessage(`Logging into org: ${org.name}`);
+    });
+
+
+
 }
 
 
