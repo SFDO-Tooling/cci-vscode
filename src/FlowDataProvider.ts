@@ -2,11 +2,17 @@ import * as vscode from 'vscode';
 import { exec } from 'child_process';
 
 
-export class FlowDataProvider implements vscode.TreeDataProvider<vscode.TreeItem> {
+export class FlowDataProvider implements vscode.TreeDataProvider<Flow> {
     flows: Flow[];
+    output: vscode.OutputChannel;
 
-    constructor() {
+    constructor(output: vscode.OutputChannel) {
         this.flows = [];
+        this.output = output;
+    }
+
+    refresh(): void {
+        this.output.appendLine('Refreshing flows...');
     }
 
     getTreeItem(element: vscode.TreeItem): vscode.TreeItem {
@@ -36,12 +42,14 @@ export class FlowDataProvider implements vscode.TreeDataProvider<vscode.TreeItem
             return new Promise<Flow[]>(resolve => resolve(this.flows));
         }
         return [
-            new Flow('ci_beta','Continuous integration tests with Beta dependencies.', vscode.TreeItemCollapsibleState.None),
-            new Flow('dev_org','Create an org for development purposes.', vscode.TreeItemCollapsibleState.None),
-            new Flow('dependencies','Deploys package dependencies into the target org.', vscode.TreeItemCollapsibleState.None),
+            new Flow('ci_beta', 'Continuous integration tests with Beta dependencies.', vscode.TreeItemCollapsibleState.None),
+            new Flow('dev_org', 'Create an org for development purposes.', vscode.TreeItemCollapsibleState.None),
+            new Flow('dependencies', 'Deploys package dependencies into the target org.', vscode.TreeItemCollapsibleState.None),
         ];
     }
+
 }
+
 
 
 export class Flow extends vscode.TreeItem {
@@ -52,7 +60,7 @@ export class Flow extends vscode.TreeItem {
     ) {
         super(name, collapsibleState);
     }
-    
+
     // TODO: get codicons working (beaker looks neat)
     // https://microsoft.github.io/vscode-codicons/dist/codicon.html
     iconPath = vscode.ThemeIcon.File;

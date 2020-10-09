@@ -20,7 +20,7 @@
             "activitybar": [
                 {
                     "id": "cci-explorer",
-                    "title": "CumulusCI Explorer", 
+                    "title": "CumulusCI Explorer",
                     "icon": "media/images/dep.svg"
                 }
             ]
@@ -43,10 +43,49 @@
         },
         "commands": [
             {
-                "command": "cci.helloWorld",
-                "title": "Hello World"
+                "command": "cci.refreshOrgs",
+                "title": "Refresh Orgs",
+                "icon": {
+                    "light": "resources/light/refresh.svg",
+                    "dark": "resources/dark/refresh.svg"
+                }
+            },
+            {
+                "command": "cci.refreshTasks",
+                "title": "Refresh Tasks",
+                "icon": {
+                    "light": "resources/light/refresh.svg",
+                    "dark": "resources/dark/refresh.svg"
+                }
+            },
+            {
+                "command": "cci.refreshFlows",
+                "title": "Refresh Flows",
+                "icon": {
+                    "light": "resources/light/refresh.svg",
+                    "dark": "resources/dark/refresh.svg"
+                }
             }
-        ]
+        ],
+        "menus": {
+            "view/title": [
+                {
+                    "group": "navigation",
+                    "when": "view == cciOrgView",
+                    "command": "cci.refreshOrgs"
+                },
+                {
+                    "group": "navigation",
+                    "when": "view == cciTaskView",
+                    "command": "cci.refreshTasks"
+                },
+                {
+                    "group": "navigation",
+                    "when": "view == cciFlowView",
+                    "command": "cci.refreshFlows"
+                }
+            ]
+        }
     },
     "scripts": {
         "vscode:prepublish": "yarn run compile",
