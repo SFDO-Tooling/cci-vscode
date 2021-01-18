@@ -1,17 +1,20 @@
 import * as vscode from 'vscode';
+import { execSync } from 'child_process';
 
 
 export class TaskDataProvider implements vscode.TreeDataProvider<Task> {
-    flows: Task[];
+    tasks: Task[];
     output: vscode.OutputChannel;
 
     constructor(output: vscode.OutputChannel) {
-        this.flows = [];
+        this.tasks = [];
         this.output = output;
     }
 
     refresh(): void {
-        this.output.appendLine('Refreshing tasks...');
+        vscode.window.showInformationMessage('Refreshing Tasks');
+        this.tasks = [];
+        this.getChildren(undefined);
     }
 
     getTreeItem(element: vscode.TreeItem): vscode.TreeItem {
@@ -19,16 +22,29 @@ export class TaskDataProvider implements vscode.TreeDataProvider<Task> {
     }
 
     getChildren(element?: vscode.TreeItem): Thenable<Task[]> | Task[] | null {
-        return [
-            new Task('github_automerge_main', 'Merges commits to the main branch into feature branches.', vscode.TreeItemCollapsibleState.None),
-            new Task('robot', 'Runs a Robot Framework test from a .robot file', vscode.TreeItemCollapsibleState.None),
-            new Task('activate_flow', 'Activates Flows identified by a given list of Deceloper Names', vscode.TreeItemCollapsibleState.None),
-            new Task('execute_anon', 'Execute anonymous apex via the tooling api.', vscode.TreeItemCollapsibleState.None),
-        ];
+        if (element === undefined) {
+            this.output.appendLine('> Fetching tasks');
+            const stdout = execSync('cci task list --json');
+            const taskJson = JSON.parse(stdout.toString());
+            for (let i = 0; i < taskJson.length; ++i) {
+                let t = new Task(
+                    taskJson[i]['name'], 
+                    taskJson[i]['description'],
+                    vscode.TreeItemCollapsibleState.None
+                );
+                t.command = {
+                    command: "cciFlowView.selectNode",
+                    title: "Select Node",
+                    arguments: [t]
+                };
+                this.tasks.push(t);
+            }
+            this.output.appendLine('> Found ' + this.tasks.length + ' tasks');
+        }
+        return new Promise<Task[]>(resolve => resolve(this.tasks));
     }
 
 }
-
 
 
 export class Task extends vscode.TreeItem {
@@ -36,7 +52,7 @@ export class Task extends vscode.TreeItem {
 
     constructor(
         public readonly name: string,
-        public readonly tooltip: string, // path/to/org.json
+        public readonly tooltip: string, 
         public readonly collapsibleState: vscode.TreeItemCollapsibleState
     ) {
         super(name, collapsibleState);

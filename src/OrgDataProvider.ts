@@ -3,11 +3,11 @@ import * as vscode from 'vscode';
 
 
 export class OrgDataProvider implements vscode.TreeDataProvider<Org> {
-    flows: Org[];
+    orgs: Org[];
     output: vscode.OutputChannel;
 
     constructor(output: vscode.OutputChannel) {
-        this.flows = [];
+        this.orgs = [];
         this.output = output;
     }
 
