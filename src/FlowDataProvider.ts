@@ -22,12 +22,14 @@ export class FlowDataProvider implements vscode.TreeDataProvider<Flow> {
     getChildren(element?: vscode.TreeItem): Thenable<Flow[]> | Flow[] | null {
         if (element === undefined) {
             this.output.appendLine('> Fetching flows from CumulusCI');
-            let stdout = execSync('cci flow list --json');
+            let stdout = execSync('cci flow list --json', {
+                cwd: "/Users/brandon.parker/repos/cci2"
+            });
             let flowJson = JSON.parse(stdout.toString());
-            for (let i = 0; i < flowJson.length; ++i) {
+            for (const flow of flowJson) {
                 let f = new Flow(
-                    flowJson[i]['name'],
-                    flowJson[i]['description'],
+                    flow['name'],
+                    flow['description'],
                     vscode.TreeItemCollapsibleState.None
                 );
                 f.command = {

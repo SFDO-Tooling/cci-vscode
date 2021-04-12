@@ -8,5 +8,5 @@
     },
     // Turn off tsc task auto detection since we have the necessary tasks as npm scripts
     "typescript.tsc.autoDetect": "off",
-    "python.pythonPath": "/Users/brandor/.pyenv/versions/cci-385/bin/python"
+    "python.pythonPath": "/Users/brandon.parker/.pyenv/versions/3.8.5/envs/cci2-385/bin/python"
 }
