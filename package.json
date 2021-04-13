@@ -81,7 +81,7 @@
             },
             {
                 "command": "cci.orgOperations",
-                "title": "Perform an Operation",
+                "title": "Operate on an Org",
                 "icon": {
                     "light": "resources/light/run.svg",
                     "dark": "resources/dark/run.svg"
@@ -89,7 +89,7 @@
             },
             {
                 "command": "cci.runFlow",
-                "title": "Run Flow",
+                "title": "Run A Flow",
                 "icon": {
                     "light": "resources/light/run.svg",
                     "dark": "resources/dark/run.svg"

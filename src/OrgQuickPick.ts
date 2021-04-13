@@ -2,7 +2,6 @@ import { OutputChannel, ProgressLocation, window, workspace } from "vscode";
 import { exec, execSync } from 'child_process';
 import { Org } from './OrgDataProvider';
 
-
 export default async function showOrgQuickPick(org: Org, channel: OutputChannel) {
     let orgOperations = [
         'Open Org in Browser',

@@ -22,7 +22,7 @@ export class OrgDataProvider implements vscode.TreeDataProvider<Org> {
 
     getChildren(element?: vscode.TreeItem): Thenable<Org[]> | Org[] | null {
         if (element === undefined) {
-            this.output.appendLine('> Fetching orgs from CumulusCI');
+            this.output.appendLine('Fetching orgs from CumulusCI');
             let stdout = execSync('cci org list --json', {
                     cwd: "/Users/brandon.parker/repos/cci2"
                 }
@@ -32,10 +32,10 @@ export class OrgDataProvider implements vscode.TreeDataProvider<Org> {
                 let tooltip = 'is default: ';
                 let orgName = key;
                 if (orgJson[key]["isDefault"]){
-                    orgName += ' *';
-                    tooltip += 'true'
+                    orgName += ' (Default)';
+                    tooltip += 'true';
                 } else {
-                    tooltip += 'false'
+                    tooltip += 'false';
                 }
 
                 let domain = 'n/a';
@@ -69,7 +69,7 @@ export class OrgDataProvider implements vscode.TreeDataProvider<Org> {
                 };
                 this.orgs.push(o);
             }
-            this.output.appendLine('> Found ' + this.orgs.length + ' orgs');
+            this.output.appendLine('Found ' + this.orgs.length + ' orgs');
         }
         return new Promise<Org[]>(resolve => resolve(this.orgs));
     }
