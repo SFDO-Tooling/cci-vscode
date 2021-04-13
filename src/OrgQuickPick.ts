@@ -15,13 +15,15 @@ export default async function showOrgQuickPick(org: Org, channel: OutputChannel)
         onDidSelectItem: item => null 
     });
 
-    // Open Org in Browser
+    let cmd: string;
+
     if (choice === orgOperations[0]) {
-        channel.appendLine(`Executing another option`);
+        cmd = `cci org browser ${org.devName}`;
+        channel.appendLine(`Executing: ${cmd}`);
         window.withProgress(
             {
                 location: ProgressLocation.Notification,
-                title: `Opening org ${org.devName} in browser` 
+                title: `Executing: ${cmd}` 
             },
             async (progress) => {
                 progress.report({ increment: 0 });
@@ -43,7 +45,40 @@ export default async function showOrgQuickPick(org: Org, channel: OutputChannel)
                 }, 7000);
 
                 const p = new Promise<void>(resolve => {
-                    exec(`cci org browser ${org.devName}`, {
+                    exec(cmd, {
+                        // TODO: replace workspace.rootPath 
+                        cwd: '/Users/brandon.parker/repos/cci2',
+                        windowsHide: true,
+                    }, (error, stdout, stderr) => {
+                        // TODO: refresh the org view automatically
+                        // to reflect up-to-date default org.
+                        resolve();
+                    });
+                });
+                return p;
+            }
+        );
+    } else if (choice === orgOperations[1]){
+        cmd = `cci org default ${org.devName}`;
+        window.withProgress(
+            {
+                location: ProgressLocation.Notification,
+                title: `Executing ${cmd}` 
+            },
+            async (progress) => {
+                progress.report({ increment: 0 });
+
+                setTimeout(() => {
+                    progress.report({ increment: 40, message: "opening some files" });
+                }, 1000);
+
+                setTimeout(() => {
+                    progress.report({ increment: 80, message: "rummaging around" });
+                }, 3000);
+
+
+                const p = new Promise<void>(resolve => {
+                    exec(cmd, {
                         // TODO: replace workspace.rootPath 
                         cwd: '/Users/brandon.parker/repos/cci2',
                         windowsHide: true,
@@ -52,9 +87,38 @@ export default async function showOrgQuickPick(org: Org, channel: OutputChannel)
                 return p;
             }
         );
-    } else if (choice === orgOperations[1]){
-
     } else if (choice === orgOperations[2]) {
+        cmd = `cci org scratch_delete ${org.devName}`;
+        channel.appendLine(`Executing: ${cmd}`);
+        window.withProgress(
+            {
+                location: ProgressLocation.Notification,
+                title: `Executing ${cmd}` 
+            },
+            async (progress) => {
+                progress.report({ increment: 0 });
+
+                setTimeout(() => {
+                    progress.report({ increment: 40, message: "digging org's grave" });
+                }, 1000);
+
+                setTimeout(() => {
+                    progress.report({ increment: 80, message: "performing taps on the bugle" });
+                }, 3000);
+
+
+                const p = new Promise<void>(resolve => {
+                    exec(cmd, {
+                        // TODO: replace workspace.rootPath 
+                        cwd: '/Users/brandon.parker/repos/cci2',
+                        windowsHide: true,
+                    }, (error, stdout, stderr) => {
+                        // TODO: refresh org view 
+                        resolve();});
+                });
+                return p;
+            }
+        );
 
     } else {
         console.log('We should not be here.');
