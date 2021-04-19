@@ -1,13 +1,14 @@
 
+import { execSync } from 'child_process';
 import * as vscode from 'vscode';
 
 
 export class OrgDataProvider implements vscode.TreeDataProvider<Org> {
-    flows: Org[];
+    orgs: Org[];
     output: vscode.OutputChannel;
 
     constructor(output: vscode.OutputChannel) {
-        this.flows = [];
+        this.orgs = [];
         this.output = output;
     }
 
@@ -20,15 +21,58 @@ export class OrgDataProvider implements vscode.TreeDataProvider<Org> {
     }
 
     getChildren(element?: vscode.TreeItem): Thenable<Org[]> | Org[] | null {
-        return [
-            new Org('beta', 'orgs/beta.json', vscode.TreeItemCollapsibleState.None),
-            new Org('dev', 'orgs/dev.json', vscode.TreeItemCollapsibleState.None),
-            new Org('feature', 'orgs/feature.json', vscode.TreeItemCollapsibleState.None),
-            new Org('qa', 'orgs/dev.json', vscode.TreeItemCollapsibleState.None),
-            new Org('release', 'orgs/release.json', vscode.TreeItemCollapsibleState.None),
-        ];
-    }
+        if (element === undefined) {
+            this.output.appendLine('Fetching orgs from CumulusCI');
+            let stdout = execSync('cci org list --json', {
+                    cwd: "/Users/brandon.parker/repos/cci2"
+                }
+            );
+            let orgJson = JSON.parse(stdout.toString());
+            for (const key in orgJson) {
+                let tooltip = 'is default: ';
+                let orgName = key;
+                if (orgJson[key]["isDefault"]){
+                    orgName += ' (Default)';
+                    tooltip += 'true';
+                } else {
+                    tooltip += 'false';
+                }
 
+                let domain = 'n/a';
+                if (orgJson[key]["isScratch"]) {
+                    let config = "config: orgs/" + orgJson[key]['config'] + ".json";
+                    let orgCreated = !orgJson[key]['expired'];
+                    let days = 'n/a';
+                    if (orgCreated) {
+                        days = orgJson[key]['days'];
+                        domain = orgJson[key]['domain'];
+                    } 
+                    tooltip += '\n' + config;
+                    tooltip += `\nOrg Created: ${orgCreated}`;
+                    tooltip += `\nDays: ${days}`;
+                    tooltip += `\nDomain: ${domain}`;
+                }
+                else {
+                    orgName += " (Persistent)";
+                }
+
+                let o = new Org(
+                    orgName,
+                    key,
+                    tooltip,
+                    vscode.TreeItemCollapsibleState.None
+                );
+                o.command = {
+                    command: "cciOrgView.selectNode",
+                    title: "Select Node",
+                    arguments: [o]
+                };
+                this.orgs.push(o);
+            }
+            this.output.appendLine('Found ' + this.orgs.length + ' orgs');
+        }
+        return new Promise<Org[]>(resolve => resolve(this.orgs));
+    }
 }
 
 
@@ -37,8 +81,11 @@ export class Org extends vscode.TreeItem {
     public readonly contextValue = 'org';
 
     constructor(
+        // The name displayed in the tree view
         public readonly name: string,
-        public readonly tooltip: string, // path/to/org.json
+        // The name of the org (without anything extra added)
+        public readonly devName: string,
+        public readonly tooltip: string, 
         public readonly collapsibleState: vscode.TreeItemCollapsibleState
     ) {
         super(name, collapsibleState);

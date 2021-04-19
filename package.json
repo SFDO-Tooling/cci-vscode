@@ -11,7 +11,6 @@
     ],
     "activationEvents": [
         "onView:cciOrgView",
-        "onView:cciTaskView",
         "onView:cciFlowView"
     ],
     "main": "./out/extension.js",
@@ -32,10 +31,6 @@
                     "name": "Orgs"
                 },
                 {
-                    "id": "cciTaskView",
-                    "name": "Tasks"
-                },
-                {
                     "id": "cciFlowView",
                     "name": "Flows"
                 }
@@ -50,11 +45,6 @@
                 },
                 {
                     "group": "navigation",
-                    "when": "view == cciTaskView",
-                    "command": "cci.refreshTasks"
-                },
-                {
-                    "group": "navigation",
                     "when": "view == cciFlowView",
                     "command": "cci.refreshFlows"
                 }
@@ -62,13 +52,8 @@
             "view/item/context": [
                 {
                     "group": "inline",
-                    "command": "cci.openOrg",
+                    "command": "cci.orgOperations",
                     "when": "view == cciOrgView && viewItem == org"
-                },
-                {
-                    "group": "inline",
-                    "command": "cci.runTask",
-                    "when": "view == cciTaskView && viewItem == task"
                 },
                 {
                     "group": "inline",
@@ -87,14 +72,6 @@
                 }
             },
             {
-                "command": "cci.refreshTasks",
-                "title": "Refresh Tasks",
-                "icon": {
-                    "light": "resources/light/refresh.svg",
-                    "dark": "resources/dark/refresh.svg"
-                }
-            },
-            {
                 "command": "cci.refreshFlows",
                 "title": "Refresh Flows",
                 "icon": {
@@ -103,16 +80,8 @@
                 }
             },
             {
-                "command": "cci.openOrg",
-                "title": "Open Org in Browser",
-                "icon": {
-                    "light": "resources/light/run.svg",
-                    "dark": "resources/dark/run.svg"
-                }
-            },
-            {
-                "command": "cci.runTask",
-                "title": "Run Task",
+                "command": "cci.orgOperations",
+                "title": "Operate on an Org",
                 "icon": {
                     "light": "resources/light/run.svg",
                     "dark": "resources/dark/run.svg"
@@ -120,7 +89,7 @@
             },
             {
                 "command": "cci.runFlow",
-                "title": "Run Flow",
+                "title": "Run A Flow",
                 "icon": {
                     "light": "resources/light/run.svg",
                     "dark": "resources/dark/run.svg"
@@ -137,16 +106,19 @@
         "test": "node ./out/test/runTest.js"
     },
     "devDependencies": {
-        "@types/vscode": "^1.49.0",
         "@types/glob": "^7.1.3",
         "@types/mocha": "^8.0.0",
         "@types/node": "^12.11.7",
-        "eslint": "^7.9.0",
+        "@types/vscode": "^1.49.0",
         "@typescript-eslint/eslint-plugin": "^4.1.1",
         "@typescript-eslint/parser": "^4.1.1",
+        "eslint": "^7.9.0",
         "glob": "^7.1.6",
         "mocha": "^8.1.3",
         "typescript": "^4.0.2",
         "vscode-test": "^1.4.0"
+    },
+    "dependencies": {
+        "await-exec": "^0.1.2"
     }
 }

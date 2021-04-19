@@ -1,55 +1,41 @@
-import * as path from 'path';
-import * as vscode from 'vscode';
+import {commands, window, ExtensionContext, OutputChannel } from 'vscode';
 import { Flow, FlowDataProvider } from './FlowDataProvider';
 import { Org, OrgDataProvider } from './OrgDataProvider';
-import { Task, TaskDataProvider } from './TaskDataProvider';
+import showOrgQuickPick from './OrgQuickPick';
+import showFlowQuickPick from './FlowQuickPick';
 
 
 // called on activation of extension
 // see activationEvents in package.json
-export function activate(context: vscode.ExtensionContext) {
+export function activate(context: ExtensionContext) {
+    let channel = initOutputChannel();
+    channel.appendLine('CumulusCI extension activated');
 
-    let output = initOutputChannel();
-    output.appendLine('CumulusCI extension activated');
+    // Data Providers
+    const orgDataProvider = new OrgDataProvider(channel);
+    const flowDataProvider = new FlowDataProvider(channel);
 
-    const orgDataProvider = new OrgDataProvider(output);
-    const taskDataProvider = new TaskDataProvider(output);
-    const flowDataProvider = new FlowDataProvider(output);
+    // Register Tree Views
+    window.registerTreeDataProvider("cciOrgView", orgDataProvider);
+    window.registerTreeDataProvider("cciFlowView", flowDataProvider);
 
-    // Register tree views
-    vscode.window.registerTreeDataProvider("cciOrgView", orgDataProvider);
-    vscode.window.registerTreeDataProvider("cciTaskView", taskDataProvider);
-    vscode.window.registerTreeDataProvider("cciFlowView", flowDataProvider);
-
-    // Register commands
-    vscode.commands.registerCommand('cci.refreshOrgs', () => orgDataProvider.refresh());
-    vscode.commands.registerCommand('cci.refreshTasks', () => taskDataProvider.refresh());
-    vscode.commands.registerCommand('cci.refreshFlows', () => flowDataProvider.refresh());
-
-    vscode.commands.registerCommand('cci.runFlow', (flow: Flow) => {
-        vscode.window.showInformationMessage(`Running Flow: ${flow.name}`);
-        // TODO: Open popup window and let user select which org they want to run flow against
-        // TODO: Execute `cci flow run ${flow.name} 
+    // Commands
+    commands.registerCommand('cci.refreshOrgs', () => orgDataProvider.refresh());
+    commands.registerCommand('cci.refreshFlows', () => flowDataProvider.refresh());
+    commands.registerCommand('cci.orgOperations', (org: Org) => {
+        showOrgQuickPick(org, channel);
     });
-    vscode.commands.registerCommand('cci.runTask', (task: Task) => {
-        vscode.window.showInformationMessage(`Running Task: ${task.name}`);
+    commands.registerCommand('cci.runFlow', (flow: Flow) => {
+        showFlowQuickPick(flow, orgDataProvider.orgs, channel);
     });
-    vscode.commands.registerCommand('cci.openOrg', (org: Org) => {
-        vscode.window.showInformationMessage(`Logging into org: ${org.name}`);
-    });
-
-
-
 }
 
-
 // Create and return a channel that is visible to users
-function initOutputChannel(): vscode.OutputChannel {
-    const channel = vscode.window.createOutputChannel('CumulusCI');
+function initOutputChannel(): OutputChannel {
+    const channel = window.createOutputChannel('CumulusCI');
     channel.show();
     return channel;
 }
-
 
 // called when the extension is deactivated
 export function deactivate() { }
