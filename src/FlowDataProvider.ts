@@ -32,6 +32,7 @@ export class FlowDataProvider implements vscode.TreeDataProvider<Flow> {
         } else {
             this.output.appendLine('> Fetching flows from CumulusCI');
             let stdout = execSync('cci flow list --json', {
+                // TODO: change to ${workspaceRoot}?
                 cwd: "/Users/brandon.parker/repos/cci2"
             });
             let flowJson = JSON.parse(stdout.toString());

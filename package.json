@@ -94,6 +94,14 @@
                     "light": "resources/light/run.svg",
                     "dark": "resources/dark/run.svg"
                 }
+            },
+            {
+                "command": "cci.version",
+                "title": "cci version"
+            },
+            {
+                "command": "cci.error.gist",
+                "title": "cci error gist"
             }
         ]
     },

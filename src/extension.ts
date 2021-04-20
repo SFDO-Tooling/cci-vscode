@@ -8,6 +8,7 @@ import showFlowQuickPick from './FlowQuickPick';
 export function activate(context: ExtensionContext) {
     let channel = window.createOutputChannel('CumulusCI');
     let terminal = window.createTerminal('CumulusCI');
+    terminal.sendText('clear');
 
     // Data Providers
     const orgDataProvider = new OrgDataProvider(channel);
@@ -17,9 +18,18 @@ export function activate(context: ExtensionContext) {
     window.registerTreeDataProvider("cciOrgView", orgDataProvider);
     window.registerTreeDataProvider("cciFlowView", flowDataProvider);
 
-    // Commands
+    // Commands --> Command Palatte Additions
+    commands.registerCommand('cci.version', () => {
+        terminal.show();
+        terminal.sendText('cci version');
+    });
+    commands.registerCommand('cci.error.gist', () => {
+        terminal.show();
+        terminal.sendText('cci error gist');
+    });
     commands.registerCommand('cci.refreshOrgs', () => orgDataProvider.refresh());
     commands.registerCommand('cci.refreshFlows', () => flowDataProvider.refresh());
+    // Commands --> QuickPicks  
     commands.registerCommand('cci.orgOperations', (org: Org) => {
         showOrgQuickPick(org, terminal);
     });
@@ -28,7 +38,10 @@ export function activate(context: ExtensionContext) {
     });
 }
 
-// called when the extension is deactivated
 export function deactivate() {
-    // TODO: terminal.dispose();
+    for (const terminal of window.terminals){
+        if (terminal.name === "CumulusCI") {
+            terminal.dispose();
+        }
+    }
 }
