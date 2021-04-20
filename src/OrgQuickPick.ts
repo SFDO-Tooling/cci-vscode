@@ -25,6 +25,7 @@ export default async function showOrgQuickPick(org: Org, terminal: Terminal) {
             cmd = `cci org scratch_delete ${org.devName}`;
         }
         terminal.show();
+        terminal.sendText('clear');
         terminal.sendText(cmd);
     }
 }
