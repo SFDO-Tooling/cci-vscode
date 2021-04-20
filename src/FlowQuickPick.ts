@@ -2,7 +2,6 @@ import { OutputChannel, ProgressLocation, Terminal, window, workspace } from "vs
 import { exec, execSync } from 'child_process';
 import { Flow } from './FlowDataProvider';
 import { Org } from "./OrgDataProvider";
-import runCommand from "./util";
 
 
 export default async function showFlowQuickPick(flow: Flow, orgs: Org[], terminal: Terminal) {
