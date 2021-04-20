@@ -1,15 +1,13 @@
-import {commands, window, ExtensionContext, OutputChannel } from 'vscode';
+import {commands, window, ExtensionContext, OutputChannel, workspace } from 'vscode';
 import { Flow, FlowDataProvider } from './FlowDataProvider';
 import { Org, OrgDataProvider } from './OrgDataProvider';
 import showOrgQuickPick from './OrgQuickPick';
 import showFlowQuickPick from './FlowQuickPick';
 
 
-// called on activation of extension
-// see activationEvents in package.json
 export function activate(context: ExtensionContext) {
-    let channel = initOutputChannel();
-    channel.appendLine('CumulusCI extension activated');
+    let channel = window.createOutputChannel('CumulusCI');
+    let terminal = window.createTerminal('CumulusCI');
 
     // Data Providers
     const orgDataProvider = new OrgDataProvider(channel);
@@ -23,19 +21,14 @@ export function activate(context: ExtensionContext) {
     commands.registerCommand('cci.refreshOrgs', () => orgDataProvider.refresh());
     commands.registerCommand('cci.refreshFlows', () => flowDataProvider.refresh());
     commands.registerCommand('cci.orgOperations', (org: Org) => {
-        showOrgQuickPick(org, channel);
+        showOrgQuickPick(org, terminal);
     });
     commands.registerCommand('cci.runFlow', (flow: Flow) => {
-        showFlowQuickPick(flow, orgDataProvider.orgs, channel);
+        showFlowQuickPick(flow, orgDataProvider.orgs, terminal);
     });
-}
-
-// Create and return a channel that is visible to users
-function initOutputChannel(): OutputChannel {
-    const channel = window.createOutputChannel('CumulusCI');
-    channel.show();
-    return channel;
 }
 
 // called when the extension is deactivated
-export function deactivate() { }
+export function deactivate() {
+    // TODO: terminal.dispose();
+}

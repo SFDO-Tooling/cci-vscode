@@ -29,13 +29,13 @@ export class OrgDataProvider implements vscode.TreeDataProvider<Org> {
             );
             let orgJson = JSON.parse(stdout.toString());
             for (const key in orgJson) {
-                let tooltip = 'is default: ';
+                let tooltip = '';
                 let orgName = key;
                 if (orgJson[key]["isDefault"]){
                     orgName += ' (Default)';
-                    tooltip += 'true';
+                    tooltip += 'is default: true';
                 } else {
-                    tooltip += 'false';
+                    tooltip += 'is default: false';
                 }
 
                 let domain = 'n/a';
