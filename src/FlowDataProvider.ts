@@ -3,12 +3,14 @@ import * as vscode from 'vscode';
 
 
 export class FlowDataProvider implements vscode.TreeDataProvider<Flow> {
-    flows: Flow[];
+    flowGroups: FlowGroup[];
     output: vscode.OutputChannel;
+    flowsByGroup: Map<String, Flow[]>;
 
     constructor(output: vscode.OutputChannel) {
-        this.flows = [];
+        this.flowGroups = [];
         this.output = output;
+        this.flowsByGroup = new Map<String, Flow[]>();
     }
 
     refresh(): void {
@@ -19,8 +21,15 @@ export class FlowDataProvider implements vscode.TreeDataProvider<Flow> {
         return element;
     }
 
-    getChildren(element?: vscode.TreeItem): Thenable<Flow[]> | Flow[] | null {
-        if (element === undefined) {
+    getChildren(element?: vscode.TreeItem): Thenable<Flow[]> | Thenable<FlowGroup[]> | null{
+        if (element){
+            let flowsInGroup = this.flowsByGroup.get(element.label);
+            if (flowsInGroup) {
+                return new Promise<Flow[]>(resolve => resolve(flowsInGroup)); 
+            } else {
+                return null;
+            }
+        } else {
             this.output.appendLine('> Fetching flows from CumulusCI');
             let stdout = execSync('cci flow list --json', {
                 cwd: "/Users/brandon.parker/repos/cci2"
@@ -37,13 +46,19 @@ export class FlowDataProvider implements vscode.TreeDataProvider<Flow> {
                     title: "Select Node",
                     arguments: [f]
                 };
-                this.flows.push(f);
+                let loadedFlows = this.flowsByGroup.get(flow['group']);
+                if(loadedFlows) {
+                    // pass by reference, so this sets
+                    // the flows in the flowsByGroup map
+                    loadedFlows.push(f);
+                } else {
+                    this.flowsByGroup.set(flow['group'], [f]);
+                    this.flowGroups.push(new FlowGroup(flow['group'], vscode.TreeItemCollapsibleState.Collapsed));
+                }
             }
-            this.output.appendLine('> Found ' + this.flows.length + ' flows');
+            return new Promise<FlowGroup[]>(resolve => resolve(this.flowGroups));
         }
-        return new Promise<Flow[]>(resolve => resolve(this.flows));
     }
-
 }
 
 
@@ -58,10 +73,20 @@ export class Flow extends vscode.TreeItem {
         super(name, collapsibleState);
     }
 
-    run(output: vscode.OutputChannel): void {
-        output.appendLine(`Running: cci flow run ${this.name}`);
-    }
     // TODO: get codicons working (beaker looks neat)
     // https://microsoft.github.io/vscode-codicons/dist/codicon.html
     iconPath = vscode.ThemeIcon.File;
+}
+
+export class FlowGroup extends vscode.TreeItem {
+    public readonly contextValue = 'flowGroup';
+
+    constructor(
+        public readonly name: string,
+        collapsibleState: vscode.TreeItemCollapsibleState.Collapsed
+    ) {
+        super(name, collapsibleState);
+    }
+
+    iconPath = vscode.ThemeIcon.Folder;
 }

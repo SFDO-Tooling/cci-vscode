@@ -15,6 +15,7 @@ export default async function showFlowQuickPick(flow: Flow, orgs: Org[], termina
     if (chosenOrg){
         let cmd = `cci flow run ${flow.name} --org ${chosenOrg}`;
         terminal.show();
+        terminal.sendText('clear');
         terminal.sendText(cmd);
     }
     
