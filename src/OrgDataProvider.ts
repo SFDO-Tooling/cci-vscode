@@ -39,9 +39,10 @@ export class OrgDataProvider implements vscode.TreeDataProvider<Org> {
                 }
 
                 let domain = 'n/a';
+                let orgCreated = false;
                 if (orgJson[key]["isScratch"]) {
                     let config = "config: orgs/" + orgJson[key]['config'] + ".json";
-                    let orgCreated = !orgJson[key]['expired'];
+                    orgCreated = !orgJson[key]['expired'];
                     let days = 'n/a';
                     if (orgCreated) {
                         days = orgJson[key]['days'];
@@ -60,6 +61,7 @@ export class OrgDataProvider implements vscode.TreeDataProvider<Org> {
                     orgName,
                     key,
                     tooltip,
+                    orgCreated,
                     vscode.TreeItemCollapsibleState.None
                 );
                 o.command = {
@@ -86,9 +88,16 @@ export class Org extends vscode.TreeItem {
         // The name of the org (without anything extra added)
         public readonly devName: string,
         public readonly tooltip: string, 
+        public readonly orgCreated: boolean,
         public readonly collapsibleState: vscode.TreeItemCollapsibleState
     ) {
-        super(name, collapsibleState);
+        super(
+            {
+                label:name,
+                highlights: orgCreated ? [[0,name.length]] : []
+            },
+            collapsibleState
+        );
     }
 
     // TODO: get codicons working 
