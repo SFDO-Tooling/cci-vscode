@@ -5,7 +5,7 @@ import * as vscode from 'vscode';
 export class FlowDataProvider implements vscode.TreeDataProvider<Flow> {
     flowGroups: FlowGroup[];
     output: vscode.OutputChannel;
-    flowsByGroup: Map<String, Flow[]>;
+    flowsByGroup: Map<String, Flow[] | undefined>;
 
     constructor(output: vscode.OutputChannel) {
         this.flowGroups = [];
@@ -47,16 +47,20 @@ export class FlowDataProvider implements vscode.TreeDataProvider<Flow> {
                     title: "Select Node",
                     arguments: [f]
                 };
-                let loadedFlows = this.flowsByGroup.get(flow['group']);
+                let groupName = flow['group'] ? flow['group'] : 'Misc';
+                let loadedFlows = this.flowsByGroup.get(groupName);
                 if(loadedFlows) {
-                    // pass by reference, so this sets
-                    // the flows in the flowsByGroup map
+                    // pass by reference, so this sets the flows in the flowsByGroup map
                     loadedFlows.push(f);
                 } else {
-                    this.flowsByGroup.set(flow['group'], [f]);
-                    this.flowGroups.push(new FlowGroup(flow['group'], vscode.TreeItemCollapsibleState.Collapsed));
+                    this.flowsByGroup.set(groupName, [f]);
+                    this.flowGroups.push(new FlowGroup(groupName, vscode.TreeItemCollapsibleState.Collapsed));
                 }
             }
+            for (let [key, value] of this.flowsByGroup.entries()) {
+                console.log('>>> ' + key);
+            }
+
             return new Promise<FlowGroup[]>(resolve => resolve(this.flowGroups));
         }
     }
