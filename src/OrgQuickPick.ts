@@ -5,8 +5,10 @@ import { Org } from './OrgDataProvider';
 export default async function showOrgQuickPick(org: Org, terminal: Terminal) {
     // TODO: use enum for this
     let orgOperations = [
+        'Get Org Info',
         'Open Org in Browser',
         'Set as Default Org',
+        'Open an Org Shell',
         'Delete Org',
     ];
 
@@ -18,10 +20,14 @@ export default async function showOrgQuickPick(org: Org, terminal: Terminal) {
     if (choice) {
         let cmd = '';
         if (choice === orgOperations[0]) {
-            cmd = `cci org browser ${org.devName}`;
+            cmd = `cci org info ${org.devName}`;
         } else if (choice === orgOperations[1]){
+            cmd = `cci org browser ${org.devName}`;
+        } else if (choice === orgOperations[2]){
             cmd = `cci org default ${org.devName}`;
-        } else if (choice === orgOperations[2]) {
+        } else if (choice === orgOperations[3]) {
+            cmd = `cci org shell ${org.devName}`;
+        } else if (choice === orgOperations[4]) {
             cmd = `cci org scratch_delete ${org.devName}`;
         }
         terminal.show();
