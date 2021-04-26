@@ -30,10 +30,13 @@ export class FlowDataProvider implements vscode.TreeDataProvider<Flow> {
                 return null;
             }
         } else {
-            this.output.appendLine('> Fetching flows from CumulusCI');
+            const rootPath = vscode.workspace.workspaceFolders[0];
+            if (rootPath === undefined) {
+                return null;
+            }
+            this.output.appendLine('Fetching flows from CumulusCI');
             let stdout = execSync('cci flow list --json', {
-                // TODO: change to ${workspaceRoot}?
-                cwd: "/Users/brandon.parker/repos/cci2"
+                cwd: rootPath.uri.path
             });
             let flowJson = JSON.parse(stdout.toString());
             for (const flow of flowJson) {
@@ -57,10 +60,6 @@ export class FlowDataProvider implements vscode.TreeDataProvider<Flow> {
                     this.flowGroups.push(new FlowGroup(groupName, vscode.TreeItemCollapsibleState.Collapsed));
                 }
             }
-            for (let [key, value] of this.flowsByGroup.entries()) {
-                console.log('>>> ' + key);
-            }
-
             return new Promise<FlowGroup[]>(resolve => resolve(this.flowGroups));
         }
     }

@@ -20,7 +20,7 @@
                 {
                     "id": "cci-explorer",
                     "title": "CumulusCI Explorer",
-                    "icon": "media/images/dep.svg"
+                    "icon": "media/images/cci-logo.svg"
                 }
             ]
         },
@@ -97,11 +97,23 @@
             },
             {
                 "command": "cci.version",
-                "title": "cci version"
+                "title": "CumulusCI: Version"
+            },
+            {
+                "command": "cci.project.init",
+                "title": "CumulusCI: Initialize a Project"
             },
             {
                 "command": "cci.error.gist",
-                "title": "cci error gist"
+                "title": "CumulusCI: Share an Error Log"
+            },
+            {
+                "command": "cci.org.connect",
+                "title": "CumulusCI: Connect an Org"
+            },
+            {
+                "command": "cci.service.connect",
+                "title": "CumulusCI: Connect a Service"
             }
         ]
     },

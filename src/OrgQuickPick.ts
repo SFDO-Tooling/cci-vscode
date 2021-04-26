@@ -1,8 +1,11 @@
 import { OutputChannel, ProgressLocation, window, workspace, Terminal } from "vscode";
 import { exec, execSync } from 'child_process';
-import { Org } from './OrgDataProvider';
+import { OrgDataProvider, OrgNode } from './OrgDataProvider';
+import { time } from "console";
+import TerminalManager from "./TerminalManager";
 
-export default async function showOrgQuickPick(org: Org, terminal: Terminal) {
+export default async function showOrgQuickPick(org: OrgNode, orgDataProvider: OrgDataProvider) {
+    
     // TODO: use enum for this
     let orgOperations = [
         'Get Org Info',
@@ -13,7 +16,7 @@ export default async function showOrgQuickPick(org: Org, terminal: Terminal) {
     ];
 
     const choice = await window.showQuickPick(orgOperations, {
-        placeHolder: 'Choose an operation...',
+        placeHolder: `Choose an operation for org ${org.devName}`,
         onDidSelectItem: item => null 
     });
 
@@ -30,8 +33,6 @@ export default async function showOrgQuickPick(org: Org, terminal: Terminal) {
         } else if (choice === orgOperations[4]) {
             cmd = `cci org scratch_delete ${org.devName}`;
         }
-        terminal.show();
-        terminal.sendText('clear');
-        terminal.sendText(cmd);
+        TerminalManager.runCommand(cmd);
     }
 }

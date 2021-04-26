@@ -3,9 +3,12 @@ import { execSync } from 'child_process';
 import * as vscode from 'vscode';
 
 
-export class OrgDataProvider implements vscode.TreeDataProvider<Org> {
-    orgs: Org[];
-    output: vscode.OutputChannel;
+export class OrgDataProvider implements vscode.TreeDataProvider<OrgNode> {
+    private orgs: OrgNode[];
+    private output: vscode.OutputChannel;
+
+    private _onDidChangeOrgDataEmitter: vscode.EventEmitter<OrgNode | undefined | void> = new vscode.EventEmitter<OrgNode | undefined | void>();
+	readonly onDidChangeOrgData: vscode.Event<OrgNode | undefined | void> = this._onDidChangeOrgDataEmitter.event;
 
     constructor(output: vscode.OutputChannel) {
         this.orgs = [];
@@ -13,20 +16,30 @@ export class OrgDataProvider implements vscode.TreeDataProvider<Org> {
     }
 
     refresh(): void {
-        this.output.appendLine('Refreshing orgs...');
+        console.log('refresh()');
+        this._onDidChangeOrgDataEmitter.fire();
     }
 
     getTreeItem(element: vscode.TreeItem): vscode.TreeItem {
+        console.log(`getTreeitem(${element})`);
         return element;
     }
 
-    getChildren(element?: vscode.TreeItem): Thenable<Org[]> | Org[] | null {
-        if (element === undefined) {
+    getChildren(node?: vscode.TreeItem): Thenable<OrgNode[]> | OrgNode[] | null {
+        console.log(`getChildren(${node})`);
+        // no value for node means the extension is requesting the root node
+        if (node === undefined) {
+            // The first item in workspaceFolders corresponds to the rootPath
+            // https://code.visualstudio.com/api/references/vscode-api#workspace
+            const rootPath = vscode.workspace.workspaceFolders[0];
+            if (rootPath === undefined) {
+                return null;
+            }
+            this.orgs = [];
             this.output.appendLine('Fetching orgs from CumulusCI');
             let stdout = execSync('cci org list --json', {
-                    cwd: "/Users/brandon.parker/repos/cci2"
-                }
-            );
+                cwd: rootPath.uri.path
+            });
             let orgJson = JSON.parse(stdout.toString());
             for (const key in orgJson) {
                 let tooltip = '';
@@ -57,7 +70,7 @@ export class OrgDataProvider implements vscode.TreeDataProvider<Org> {
                     orgName += " (Persistent)";
                 }
 
-                let o = new Org(
+                let o = new OrgNode(
                     orgName,
                     key,
                     tooltip,
@@ -73,13 +86,13 @@ export class OrgDataProvider implements vscode.TreeDataProvider<Org> {
             }
             this.output.appendLine('Found ' + this.orgs.length + ' orgs');
         }
-        return new Promise<Org[]>(resolve => resolve(this.orgs));
+        return new Promise<OrgNode[]>(resolve => resolve(this.orgs));
     }
 }
 
 
 
-export class Org extends vscode.TreeItem {
+export class OrgNode extends vscode.TreeItem {
     public readonly contextValue = 'org';
 
     constructor(
