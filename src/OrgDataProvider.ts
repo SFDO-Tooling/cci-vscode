@@ -7,8 +7,8 @@ export class OrgDataProvider implements vscode.TreeDataProvider<OrgNode> {
     private orgs: OrgNode[];
     private output: vscode.OutputChannel;
 
-    private _onDidChangeOrgDataEmitter: vscode.EventEmitter<OrgNode | undefined | void> = new vscode.EventEmitter<OrgNode | undefined | void>();
-	readonly onDidChangeOrgData: vscode.Event<OrgNode | undefined | void> = this._onDidChangeOrgDataEmitter.event;
+    private _onDidChangeTreeData: vscode.EventEmitter<OrgNode | undefined | null | void> = new vscode.EventEmitter<OrgNode | undefined | null | void>();
+    readonly onDidChangeTreeData: vscode.Event<OrgNode | undefined | null | void> = this._onDidChangeTreeData.event;
 
     constructor(output: vscode.OutputChannel) {
         this.orgs = [];
@@ -17,7 +17,7 @@ export class OrgDataProvider implements vscode.TreeDataProvider<OrgNode> {
 
     refresh(): void {
         console.log('refresh()');
-        this._onDidChangeOrgDataEmitter.fire();
+        this._onDidChangeTreeData.fire();
     }
 
     getTreeItem(element: vscode.TreeItem): vscode.TreeItem {
