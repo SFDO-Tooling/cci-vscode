@@ -1,17 +1,15 @@
-
+import * as path from 'path';
 import { execSync } from 'child_process';
-import * as vscode from 'vscode';
+import { Event, EventEmitter, OutputChannel, TreeItem, TreeItemCollapsibleState, TreeDataProvider, workspace } from 'vscode';
 
 
-export class OrgDataProvider implements vscode.TreeDataProvider<OrgNode> {
-    private orgs: OrgNode[];
-    private output: vscode.OutputChannel;
+export class OrgDataProvider implements TreeDataProvider<OrgNode> {
+    public orgs: OrgNode[] = []; 
+    private output: OutputChannel;
+    private _onDidChangeTreeData: EventEmitter<OrgNode | undefined | null | void> = new EventEmitter<OrgNode | undefined | null | void>()
+    readonly onDidChangeTreeData: Event<OrgNode | undefined | null | void> = this._onDidChangeTreeData.event;
 
-    private _onDidChangeTreeData: vscode.EventEmitter<OrgNode | undefined | null | void> = new vscode.EventEmitter<OrgNode | undefined | null | void>();
-    readonly onDidChangeTreeData: vscode.Event<OrgNode | undefined | null | void> = this._onDidChangeTreeData.event;
-
-    constructor(output: vscode.OutputChannel) {
-        this.orgs = [];
+    constructor(output: OutputChannel) {
         this.output = output;
     }
 
@@ -20,18 +18,18 @@ export class OrgDataProvider implements vscode.TreeDataProvider<OrgNode> {
         this._onDidChangeTreeData.fire();
     }
 
-    getTreeItem(element: vscode.TreeItem): vscode.TreeItem {
+    getTreeItem(element: TreeItem): TreeItem {
         console.log(`getTreeitem(${element})`);
         return element;
     }
 
-    getChildren(node?: vscode.TreeItem): Thenable<OrgNode[]> | OrgNode[] | null {
+    getChildren(node?: TreeItem): Thenable<OrgNode[]> | OrgNode[] | null {
         console.log(`getChildren(${node})`);
         // no value for node means the extension is requesting the root node
         if (node === undefined) {
             // The first item in workspaceFolders corresponds to the rootPath
             // https://code.visualstudio.com/api/references/vscode-api#workspace
-            const rootPath = vscode.workspace.workspaceFolders[0];
+            const rootPath = workspace.workspaceFolders[0];
             if (rootPath === undefined) {
                 return null;
             }
@@ -67,7 +65,7 @@ export class OrgDataProvider implements vscode.TreeDataProvider<OrgNode> {
                     tooltip += `\nDomain: ${domain}`;
                 }
                 else {
-                    orgName += " (Persistent)";
+                    tooltip += "\nThis is a connected org.";
                 }
 
                 let o = new OrgNode(
@@ -75,7 +73,8 @@ export class OrgDataProvider implements vscode.TreeDataProvider<OrgNode> {
                     key,
                     tooltip,
                     orgCreated,
-                    vscode.TreeItemCollapsibleState.None
+                    orgJson[key]['isScratch'],
+                    TreeItemCollapsibleState.None
                 );
                 o.command = {
                     command: "cciOrgView.selectNode",
@@ -91,30 +90,32 @@ export class OrgDataProvider implements vscode.TreeDataProvider<OrgNode> {
 }
 
 
-
-export class OrgNode extends vscode.TreeItem {
-    public readonly contextValue = 'org';
+export class OrgNode extends TreeItem {
+        // This is references in package.json to determine
+        // on what nodes to display a specific icon
+        public readonly contextValue = 'org';
 
     constructor(
         // The name displayed in the tree view
         public readonly name: string,
         // The name of the org (without anything extra added)
         public readonly devName: string,
+        // The on-hover tooltip text
         public readonly tooltip: string, 
         public readonly orgCreated: boolean,
-        public readonly collapsibleState: vscode.TreeItemCollapsibleState
+        public readonly isScratch: boolean,
+        public readonly collapsibleState: TreeItemCollapsibleState
     ) {
-        super(
-            {
-                label:name,
-                highlights: orgCreated ? [[0,name.length]] : []
-            },
-            collapsibleState
-        );
+        super(name, collapsibleState);
+        let iconPath = '';
+        if (isScratch && orgCreated){
+            iconPath = path.join(__filename, '..', '..', 'media', 'images', 'active-scratch-org.svg');
+        } else if (isScratch) {
+            iconPath = path.join(__filename, '..', '..', 'media', 'images', 'inactive-scratch-org.svg');
+        } else {
+            iconPath = path.join(__filename, '..', '..', 'media', 'images', 'connected-org.svg');
+        }
+        this.iconPath = iconPath;
     }
-
-    // TODO: get codicons working 
-    // https://microsoft.github.io/vscode-codicons/dist/codicon.html
-    iconPath = vscode.ThemeIcon.File;
 }
 
