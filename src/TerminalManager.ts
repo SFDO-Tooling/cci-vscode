@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) 2021, salesforce.com, inc.
+ * All rights reserved.
+ * SPDX-License-Identifier: BSD-3-Clause
+ * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
+ */
+
 import { window, workspace, Terminal } from 'vscode';
 
 /**
@@ -29,7 +36,12 @@ class CCITerminal {
     public runCommand(cmd: string) {
         this.terminal.show();
         this.terminal.sendText('clear');
-        this.terminal.sendText(cmd);
+        if (cmd.startsWith('cci task run')) {
+            this.terminal.sendText("echo 'Provide any options for the task then press <ENTER>'");
+            this.terminal.sendText(cmd + ' ', false);
+        } else {
+            this.terminal.sendText(cmd);
+        }
     }
 }
 
@@ -50,14 +62,14 @@ export default class TerminalManager {
      * @param cmd - The command to execute in a terminal  
      * @param terminalId - Optional, the Id of the terminal to get.
      */
-    public static runCommand(cmd: string, terminalId: number | null = null): void {
+    public static runCommand(cmd: string, newline: boolean = true): void {
         let terminal = undefined; 
         if (cmd.startsWith('cci flow run')) {
             terminal = TerminalManager.getNewTerminal();
         } else {
             terminal = TerminalManager.getMainTerminal();
         }
-        terminal.runCommand(cmd);
+        terminal.runCommand(cmd, newline);
     }
 
     /**

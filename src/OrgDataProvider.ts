@@ -63,6 +63,7 @@ export class OrgDataProvider implements TreeDataProvider<OrgNode> {
                     tooltip += `\nOrg Created: ${orgCreated}`;
                     tooltip += `\nDays: ${days}`;
                     tooltip += `\nDomain: ${domain}`;
+                    tooltip += "\nThis is a scratch org.";
                 }
                 else {
                     tooltip += "\nThis is a connected org.";
@@ -109,11 +110,11 @@ export class OrgNode extends TreeItem {
         super(name, collapsibleState);
         let iconPath = '';
         if (isScratch && orgCreated){
-            iconPath = path.join(__filename, '..', '..', 'media', 'images', 'active-scratch-org.svg');
+            iconPath = path.join(__filename, '..', '..', 'media', 'images', 'green-circle.svg');
         } else if (isScratch) {
-            iconPath = path.join(__filename, '..', '..', 'media', 'images', 'inactive-scratch-org.svg');
+            iconPath = path.join(__filename, '..', '..', 'media', 'images', 'green-circle-dashed.svg');
         } else {
-            iconPath = path.join(__filename, '..', '..', 'media', 'images', 'connected-org.svg');
+            iconPath = path.join(__filename, '..', '..', 'media', 'images', 'connected-blue.svg');
         }
         this.iconPath = iconPath;
     }

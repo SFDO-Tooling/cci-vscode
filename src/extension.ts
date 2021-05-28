@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) 2021, salesforce.com, inc.
+ * All rights reserved.
+ * SPDX-License-Identifier: BSD-3-Clause
+ * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
+ */
+
 import {commands, window, ExtensionContext, OutputChannel, workspace } from 'vscode';
 import { Flow, FlowDataProvider } from './FlowDataProvider';
 import { Task, TaskDataProvider } from './TaskDataProvider';
@@ -62,7 +69,7 @@ export function activate(context: ExtensionContext) {
         taskDataProvider.refresh();
     });
     commands.registerCommand('cci.runTask', (task: Task) => {
-        TerminalManager.runCommand(`cci task run ${task.name}`);
+        TerminalManager.runCommand(`cci task run ${task.name}`, false);
     });
 
 
