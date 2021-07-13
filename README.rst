@@ -4,7 +4,8 @@ This extension provides a minimal graphic user interface with which users can mo
 
 Requirements
 ------------
-You need to `install CumulusCI <https://cumulusci.readthedocs.io/en/latest/get_started.html#install-cumulusci>`_ for getting started with CumulusCI.
+This extension requires CumulusCI installed on a your machine for it to work.
+See the `CumulusCI documentation <https://cumulusci.readthedocs.io/en/latest/get_started.html#install-cumulusci>`_ for help with installation and setup.
 
 
 
