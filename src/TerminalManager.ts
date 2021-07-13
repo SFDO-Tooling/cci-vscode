@@ -33,14 +33,14 @@ class CCITerminal {
         this.terminal = window.createTerminal(name);
     }
 
-    public runCommand(cmd: string) {
+    public runCommand(cmd: string, newline: boolean = true) {
         this.terminal.show();
         this.terminal.sendText('clear');
         if (cmd.startsWith('cci task run')) {
             this.terminal.sendText("echo 'Provide any options for the task then press <ENTER>'");
             this.terminal.sendText(cmd + ' ', false);
         } else {
-            this.terminal.sendText(cmd);
+            this.terminal.sendText(cmd, newline);
         }
     }
 }
@@ -63,7 +63,7 @@ export default class TerminalManager {
      * @param terminalId - Optional, the Id of the terminal to get.
      */
     public static runCommand(cmd: string, newline: boolean = true): void {
-        let terminal = undefined; 
+        let terminal : CCITerminal; 
         if (cmd.startsWith('cci flow run')) {
             terminal = TerminalManager.getNewTerminal();
         } else {
@@ -74,10 +74,10 @@ export default class TerminalManager {
 
     /**
      * @param name The name of the CCITerminal instance to find.
-     * @returns an instance of CCITerminal if one is found with the given
-     * name, else undefined.
+     * @returns The main instance of the CumulusCI terminal.
+     * If not found, one is created.
      */
-    public static getMainTerminal(): CCITerminal | undefined {
+    public static getMainTerminal(): CCITerminal {
         for (const terminal of TerminalManager.cciTerms) {
             if (terminal.name === "CumulusCI: Main") {
                 return terminal;
