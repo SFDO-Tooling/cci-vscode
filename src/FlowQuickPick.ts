@@ -6,7 +6,6 @@
  */
 
 import { OutputChannel, ProgressLocation, Terminal, window, workspace } from "vscode";
-import { exec, execSync } from 'child_process';
 import { Flow } from './FlowDataProvider';
 import { OrgNode } from "./OrgDataProvider";
 import TerminalManager from "./TerminalManager";
