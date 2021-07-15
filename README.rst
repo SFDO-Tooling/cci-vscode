@@ -59,6 +59,15 @@ Development
 -----------
 All you need to contribute to this VSCode extension is VSCode itself! Simply clone this repository, open it up in VSCode and off you go!
 
+Running Tests
+*************
+Running tests can be done through either the `yarn test` command or via the Debugger with the "Extension Tests" configuraiton selected.
+
+.. note::
+	If you are running ``yarn test`` all instances of VSCode must be closed.
+	Using `VS Code Insiders <https://code.visualstudio.com/insiders/>`_ for development mitigates this issue.
+	See the `VSCode docs <https://code.visualstudio.com/api/working-with-extensions/testing-extension#tips>`_ for more info.
+
 Debugging
 *********
 VSCode makes debugging this extension easy. Simply open this repository in VSCode, navigate to the "Run and Debug" tab, ensure the "Run Extension" option is select, and click the play button.
