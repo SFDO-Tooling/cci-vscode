@@ -73,6 +73,14 @@ Debugging
 VSCode makes debugging this extension easy. Simply open this repository in VSCode, navigate to the "Run and Debug" tab, ensure the "Run Extension" option is select, and click the play button.
 A new window of VSCode will appear with the extension running within it.
 
+Installing Pre-Release Versions
+-------------------------------
+If you're interested in trying a version of this extension that has not yet been published to the Visual Studio Code marketplace, you can access the latest ``.vsix`` file in the release tag.
+Then install the extension with:
+
+.. code:: console
+
+	code --install-extension <path/to/file> 
 
 
 Have Feedback?
