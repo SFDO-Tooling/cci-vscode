@@ -1,4 +1,4 @@
-name: Feature Test
+name: Tests
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
 
 jobs:
   tests:
-    name: run tests
+    name: run feature tests
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
