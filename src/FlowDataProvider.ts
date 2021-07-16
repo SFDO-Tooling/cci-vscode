@@ -9,7 +9,7 @@ import { execSync } from 'child_process';
 import * as vscode from 'vscode';
 
 
-export class FlowDataProvider implements vscode.TreeDataProvider<Flow> {
+export class FlowDataProvider implements vscode.TreeDataProvider<Flow | FlowGroup> {
     flowGroups: FlowGroup[];
     output: vscode.OutputChannel;
     flowsByGroup: Map<String, Flow[] | undefined>;
@@ -30,17 +30,14 @@ export class FlowDataProvider implements vscode.TreeDataProvider<Flow> {
 
     getChildren(element?: vscode.TreeItem): Thenable<Flow[]> | Thenable<FlowGroup[]> | null{
         if (element){
-            let flowsInGroup = this.flowsByGroup.get(element.label);
+            let flowsInGroup = this.flowsByGroup.get(element.label!);
             if (flowsInGroup) {
-                return new Promise<Flow[]>(resolve => resolve(flowsInGroup)); 
+                return new Promise<Flow[]>(resolve => resolve(flowsInGroup!)); 
             } else {
                 return null;
             }
         } else {
-            const rootPath = vscode.workspace.workspaceFolders[0];
-            if (rootPath === undefined) {
-                return null;
-            }
+            const rootPath = vscode.workspace.workspaceFolders![0];
             this.output.appendLine('Fetching flows from CumulusCI');
             let stdout = execSync('cci flow list --json', {
                 cwd: rootPath.uri.path

@@ -6,7 +6,7 @@ import { Event, EventEmitter, OutputChannel, TreeItem, TreeItemCollapsibleState,
 export class OrgDataProvider implements TreeDataProvider<OrgNode> {
     public orgs: OrgNode[] = []; 
     private output: OutputChannel;
-    private _onDidChangeTreeData: EventEmitter<OrgNode | undefined | null | void> = new EventEmitter<OrgNode | undefined | null | void>()
+    private _onDidChangeTreeData: EventEmitter<OrgNode | undefined | null | void> = new EventEmitter<OrgNode | undefined | null | void>();
     readonly onDidChangeTreeData: Event<OrgNode | undefined | null | void> = this._onDidChangeTreeData.event;
 
     constructor(output: OutputChannel) {
@@ -14,25 +14,19 @@ export class OrgDataProvider implements TreeDataProvider<OrgNode> {
     }
 
     refresh(): void {
-        console.log('refresh()');
         this._onDidChangeTreeData.fire();
     }
 
     getTreeItem(element: TreeItem): TreeItem {
-        console.log(`getTreeitem(${element})`);
         return element;
     }
 
     getChildren(node?: TreeItem): Thenable<OrgNode[]> | OrgNode[] | null {
-        console.log(`getChildren(${node})`);
         // no value for node means the extension is requesting the root node
         if (node === undefined) {
             // The first item in workspaceFolders corresponds to the rootPath
             // https://code.visualstudio.com/api/references/vscode-api#workspace
-            const rootPath = workspace.workspaceFolders[0];
-            if (rootPath === undefined) {
-                return null;
-            }
+            const rootPath = workspace.workspaceFolders![0];
             this.orgs = [];
             this.output.appendLine('Fetching orgs from CumulusCI');
             let stdout = execSync('cci org list --json', {

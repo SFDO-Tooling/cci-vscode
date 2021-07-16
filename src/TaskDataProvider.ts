@@ -9,7 +9,7 @@ import { OutputChannel, ThemeIcon, TreeItem, TreeItemCollapsibleState, TreeDataP
 import { execSync } from 'child_process';
 
 
-export class TaskDataProvider implements TreeDataProvider<Task> {
+export class TaskDataProvider implements TreeDataProvider<Task | TaskGroup> {
     private taskGroups: TaskGroup[];
     private output: OutputChannel;
     private tasksByGroup: Map<String, Task[] | undefined>;
@@ -30,17 +30,14 @@ export class TaskDataProvider implements TreeDataProvider<Task> {
 
     getChildren(node?: TreeItem): Thenable<Task[]> | Thenable<TaskGroup[]> | null{
         if (node){
-            let tasksInGroup = this.tasksByGroup.get(node.label);
+            let tasksInGroup = this.tasksByGroup.get(node.label!);
             if (tasksInGroup) {
-                return new Promise<Task[]>(resolve => resolve(tasksInGroup)); 
+                return new Promise<Task[]>(resolve => resolve(tasksInGroup!)); 
             } else {
                 return null;
             }
         } else {
-            const rootPath = workspace.workspaceFolders[0];
-            if (rootPath === undefined) {
-                return null;
-            }
+            const rootPath = workspace.workspaceFolders![0];
             this.output.appendLine('Fetching flows from CumulusCI');
             let stdout = execSync('cci task list --json', {
                 cwd: rootPath.uri.path

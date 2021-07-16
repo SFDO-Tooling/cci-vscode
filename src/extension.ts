@@ -97,7 +97,6 @@ export function activate(context: ExtensionContext) {
 export function deactivate() {
     for (const terminal of window.terminals){
         if (terminal.name.startsWith('CumulusCI')) {
-            console.log(`Disposing of terminal "${terminal.name}"`);
             terminal.dispose();
         }
     }
