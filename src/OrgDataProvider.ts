@@ -45,7 +45,7 @@ export class OrgDataProvider implements TreeDataProvider<OrgNode> {
 
                 let domain = 'n/a';
                 let orgCreated = false;
-                if (orgJson[key]["isScratch"]) {
+                if (orgJson[key]["is_scratch"]) {
                     let config = "config: orgs/" + orgJson[key]['config'] + ".json";
                     orgCreated = !orgJson[key]['expired'];
                     let days = 'n/a';
@@ -68,7 +68,7 @@ export class OrgDataProvider implements TreeDataProvider<OrgNode> {
                     key,
                     tooltip,
                     orgCreated,
-                    orgJson[key]['isScratch'],
+                    orgJson[key]['is_scratch'],
                     TreeItemCollapsibleState.None
                 );
                 o.command = {
