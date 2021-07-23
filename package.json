@@ -21,7 +21,7 @@
         {
           "id": "cci-explorer",
           "title": "CumulusCI Explorer",
-          "icon": "media/images/cci-logo.svg"
+          "icon": "media/images/cci-pixel-logo.png"
         }
       ]
     },
@@ -153,7 +153,7 @@
     "compile": "tsc -p ./",
     "lint": "eslint src --ext ts",
     "watch": "tsc -watch -p ./",
-    "pretest": "yarn run compile && yarn run lint",
+    "pretest": "rm -Rf out/; yarn run compile && yarn run lint",
     "test": "node ./out/test/runTest.js"
   },
   "devDependencies": {
