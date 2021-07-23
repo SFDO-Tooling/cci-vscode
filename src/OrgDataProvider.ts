@@ -22,6 +22,12 @@ export class OrgDataProvider implements TreeDataProvider<OrgNode> {
     }
 
     getChildren(node?: TreeItem): Thenable<OrgNode[]> | OrgNode[] | null {
+        // If the workspace isn't open to a specific directory then
+        // we don't know where to run `cci org list --json` from.
+        const wsp = workspace.workspaceFolders;
+        if (workspace.workspaceFolders === undefined) {
+            return null;
+        }
         // no value for node means the extension is requesting the root node
         if (node === undefined) {
             // The first item in workspaceFolders corresponds to the rootPath

@@ -29,6 +29,11 @@ export class FlowDataProvider implements vscode.TreeDataProvider<Flow | FlowGrou
     }
 
     getChildren(element?: vscode.TreeItem): Thenable<Flow[]> | Thenable<FlowGroup[]> | null{
+        // If the workspace isn't open to a specific directory then
+        // we don't know where to run `cci flow list --json` from.
+        if (vscode.workspace.workspaceFolders === undefined) {
+            return null;
+        }
         if (element){
             let flowsInGroup = this.flowsByGroup.get(element.label!);
             if (flowsInGroup) {
