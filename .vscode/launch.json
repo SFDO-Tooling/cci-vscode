@@ -1,7 +1,3 @@
-// A launch configuration that compiles the extension and then opens it inside a new window
-// Use IntelliSense to learn about possible attributes.
-// Hover to view descriptions of existing attributes.
-// For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
 {
   "version": "0.2.0",
   "configurations": [
@@ -29,6 +25,7 @@
       "type": "extensionHost",
       "request": "launch",
       "args": [
+        // open the workspace a the following directory
         "${workspaceFolder}/out/test/workspaceSuite",
         "--extensionDevelopmentPath=${workspaceFolder}",
         "--extensionTestsPath=${workspaceFolder}/out/test/workspaceSuite"
