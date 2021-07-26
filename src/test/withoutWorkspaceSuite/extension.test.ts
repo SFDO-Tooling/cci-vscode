@@ -1,7 +1,11 @@
-import * as assert from 'assert';
+/**
+ * Copyright (c) 2021, salesforce.com, inc.
+ * All rights reserved.
+ * SPDX-License-Identifier: BSD-3-Clause
+ * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
+ */
 
-// You can import and use all API from the 'vscode' module
-// as well as import your extension to test it
+import * as assert from 'assert';
 import * as vscode from 'vscode';
 import { OrgDataProvider } from '../../OrgDataProvider';
 // import * as myExtension from '../extension';
