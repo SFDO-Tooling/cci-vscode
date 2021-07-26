@@ -1,0 +1,9 @@
+project:
+  name: CumulusCI
+  package:
+    name: CumulusCI
+
+orgs:
+  scratch:
+    prerelease:
+      config_file: orgs/prerelease.json

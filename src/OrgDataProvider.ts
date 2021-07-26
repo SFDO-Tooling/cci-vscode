@@ -1,3 +1,10 @@
+/**
+ * Copyright (c) 2021, salesforce.com, inc.
+ * All rights reserved.
+ * SPDX-License-Identifier: BSD-3-Clause
+ * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
+ */
+
 import * as path from 'path';
 import { execSync } from 'child_process';
 import { Event, EventEmitter, OutputChannel, TreeItem, TreeItemCollapsibleState, TreeDataProvider, workspace } from 'vscode';
@@ -22,6 +29,12 @@ export class OrgDataProvider implements TreeDataProvider<OrgNode> {
     }
 
     getChildren(node?: TreeItem): Thenable<OrgNode[]> | OrgNode[] | null {
+        // If the workspace isn't open to a specific directory then
+        // we don't know where to run `cci org list --json` from.
+        const wsp = workspace.workspaceFolders;
+        if (workspace.workspaceFolders === undefined) {
+            return null;
+        }
         // no value for node means the extension is requesting the root node
         if (node === undefined) {
             // The first item in workspaceFolders corresponds to the rootPath

@@ -1,7 +1,20 @@
-// A launch configuration that compiles the extension and then opens it inside a new window
-// Use IntelliSense to learn about possible attributes.
-// Hover to view descriptions of existing attributes.
-// For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+/**
+ * Copyright (c) 2021, salesforce.com, inc.
+ * All rights reserved.
+ * SPDX-License-Identifier: BSD-3-Clause
+ * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
+ */
+/**
+  There are currently three configurations that can be used in the debugger:
+  
+  (1) Run Extension - Use this to debug and test the extension
+  (2) Test - without workspace suite --> Use this to debug the withoutWorkspaceSuite tests
+  (3) Test - with workspace suite --> Use this to debug the workspaceSuite of tests
+
+  Note: We cannot have a single launch configuration for running _all_ test suites.
+  Some suites require an active workspace while others due not, and when launching an
+  instance of VSCode you cannot have both at the same time.
+*/
 {
   "version": "0.2.0",
   "configurations": [
@@ -14,12 +27,27 @@
       "preLaunchTask": "${defaultBuildTask}"
     },
     {
-      "name": "Extension Tests",
+      "name": "Test - without workspace suite",
       "type": "extensionHost",
       "request": "launch",
       "args": [
         "--extensionDevelopmentPath=${workspaceFolder}",
-        "--extensionTestsPath=${workspaceFolder}/out/test/suite/index"
+        "--extensionTestsPath=${workspaceFolder}/out/test/withoutWorkspaceSuite"
+      ],
+      "outFiles": ["${workspaceFolder}/out/test/**/*.js"],
+      "preLaunchTask": "${defaultBuildTask}"
+    },
+    {
+      "name": "Test - with workspace suite",
+      "type": "extensionHost",
+      "request": "launch",
+      "args": [
+        // open the workspace to a specific directory
+        // see "Passing Arguments to the Extension Development Host" at:
+        // https://vscode-docs.readthedocs.io/en/stable/extensions/testing-extensions/#common-questions
+        "${workspaceFolder}/out/test/workspaceSuite",
+        "--extensionDevelopmentPath=${workspaceFolder}",
+        "--extensionTestsPath=${workspaceFolder}/out/test/workspaceSuite"
       ],
       "outFiles": ["${workspaceFolder}/out/test/**/*.js"],
       "preLaunchTask": "${defaultBuildTask}"

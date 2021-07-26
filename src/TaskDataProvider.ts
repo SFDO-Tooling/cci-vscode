@@ -29,6 +29,11 @@ export class TaskDataProvider implements TreeDataProvider<Task | TaskGroup> {
     }
 
     getChildren(node?: TreeItem): Thenable<Task[]> | Thenable<TaskGroup[]> | null{
+        // If the workspace isn't open to a specific directory then
+        // we don't know where to run `cci task list --json` from.
+        if (workspace.workspaceFolders === undefined) {
+            return null;
+        }
         if (node){
             let tasksInGroup = this.tasksByGroup.get(node.label!);
             if (tasksInGroup) {
