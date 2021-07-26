@@ -22,4 +22,5 @@ jobs:
           python -m pip install cumulusci
       - uses: actions/setup-node@v2
       - run: npm install yarn
+      - run: yarn
       - run: yarn test
