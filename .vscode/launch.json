@@ -16,41 +16,41 @@
   instance of VSCode you cannot have both at the same time.
 */
 {
-  "version": "0.2.0",
-  "configurations": [
-    {
-      "name": "Run Extension",
-      "type": "extensionHost",
-      "request": "launch",
-      "args": ["--extensionDevelopmentPath=${workspaceRoot}"],
-      "outFiles": ["${workspaceFolder}/out/**/*.js"],
-      "preLaunchTask": "${defaultBuildTask}"
-    },
-    {
-      "name": "Test - without workspace suite",
-      "type": "extensionHost",
-      "request": "launch",
-      "args": [
-        "--extensionDevelopmentPath=${workspaceFolder}",
-        "--extensionTestsPath=${workspaceFolder}/out/test/withoutWorkspaceSuite"
-      ],
-      "outFiles": ["${workspaceFolder}/out/test/**/*.js"],
-      "preLaunchTask": "${defaultBuildTask}"
-    },
-    {
-      "name": "Test - with workspace suite",
-      "type": "extensionHost",
-      "request": "launch",
-      "args": [
-        // open the workspace to a specific directory
-        // see "Passing Arguments to the Extension Development Host" at:
-        // https://vscode-docs.readthedocs.io/en/stable/extensions/testing-extensions/#common-questions
-        "${workspaceFolder}/out/test/workspaceSuite",
-        "--extensionDevelopmentPath=${workspaceFolder}",
-        "--extensionTestsPath=${workspaceFolder}/out/test/workspaceSuite"
-      ],
-      "outFiles": ["${workspaceFolder}/out/test/**/*.js"],
-      "preLaunchTask": "${defaultBuildTask}"
-    }
-  ]
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Run Extension",
+            "type": "extensionHost",
+            "request": "launch",
+            "args": ["--extensionDevelopmentPath=${workspaceRoot}"],
+            "outFiles": ["${workspaceFolder}/out/**/*.js"],
+            "preLaunchTask": "${defaultBuildTask}"
+        },
+        {
+            "name": "Test - without workspace suites",
+            "type": "extensionHost",
+            "request": "launch",
+            "args": [
+                "--extensionDevelopmentPath=${workspaceFolder}",
+                "--extensionTestsPath=${workspaceFolder}/out/test/withoutWorkspaceSuites"
+            ],
+            "outFiles": ["${workspaceFolder}/out/test/**/*.js"],
+            "preLaunchTask": "${defaultBuildTask}"
+        },
+        {
+            "name": "Test - with workspace suites",
+            "type": "extensionHost",
+            "request": "launch",
+            "args": [
+                // open the workspace to a specific directory
+                // see "Passing Arguments to the Extension Development Host" at:
+                // https://vscode-docs.readthedocs.io/en/stable/extensions/testing-extensions/#common-questions
+                "${workspaceFolder}/out/test/workspaceSuites",
+                "--extensionDevelopmentPath=${workspaceFolder}",
+                "--extensionTestsPath=${workspaceFolder}/out/test/workspaceSuites"
+            ],
+            "outFiles": ["${workspaceFolder}/out/test/**/*.js"],
+            "preLaunchTask": "${defaultBuildTask}"
+        }
+    ]
 }

@@ -35,7 +35,7 @@ export class TaskDataProvider implements TreeDataProvider<Task | TaskGroup> {
             return null;
         }
         if (node){
-            let tasksInGroup = this.tasksByGroup.get(node.label!);
+            let tasksInGroup = this.tasksByGroup.get(node.label!.toString());
             if (tasksInGroup) {
                 return new Promise<Task[]>(resolve => resolve(tasksInGroup!)); 
             } else {

@@ -35,7 +35,7 @@ export class FlowDataProvider implements vscode.TreeDataProvider<Flow | FlowGrou
             return null;
         }
         if (element){
-            let flowsInGroup = this.flowsByGroup.get(element.label!);
+            let flowsInGroup = this.flowsByGroup.get(element.label!.toString());
             if (flowsInGroup) {
                 return new Promise<Flow[]>(resolve => resolve(flowsInGroup!)); 
             } else {

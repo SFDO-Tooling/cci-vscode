@@ -13,7 +13,7 @@ async function main() {
                 // The folder containing the Extension Manifest package.json
                 // Passed to `--extensionDevelopmentPath`
                 const extensionDevelopmentPath = path.resolve(__dirname, '../../');
-                const withoutWorkspaceSuite = path.resolve(__dirname, './withoutWorkspaceSuite');
+                const withoutWorkspaceSuite = path.resolve(__dirname, './withoutWorkspaceSuites');
                 // test without an active workspace
                 await runTests({ 
                         extensionDevelopmentPath,
@@ -22,7 +22,7 @@ async function main() {
                         launchArgs: [undefined]
                 });
 
-                const withWorkspaceSuite = path.resolve(__dirname, './workspaceSuite');
+                const withWorkspaceSuite = path.resolve(__dirname, './workspaceSuites');
                 //test with an active workspace
                 await runTests({ 
                         extensionDevelopmentPath,
