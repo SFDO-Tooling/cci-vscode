@@ -1,3 +1,20 @@
+/**
+ * Copyright (c) 2021, salesforce.com, inc.
+ * All rights reserved.
+ * SPDX-License-Identifier: BSD-3-Clause
+ * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
+ */
+/**
+  There are currently three configurations that can be used in the debugger:
+  
+  (1) Run Extension - Use this to debug and test the extension
+  (2) Test - without workspace suite --> Use this to debug the withoutWorkspaceSuite tests
+  (3) Test - with workspace suite --> Use this to debug the workspaceSuite of tests
+
+  Note: We cannot have a single launch configuration for running _all_ test suites.
+  Some suites require an active workspace while others due not, and when launching an
+  instance of VSCode you cannot have both at the same time.
+*/
 {
   "version": "0.2.0",
   "configurations": [
@@ -25,7 +42,9 @@
       "type": "extensionHost",
       "request": "launch",
       "args": [
-        // open the workspace a the following directory
+        // open the workspace to a specific directory
+        // see "Passing Arguments to the Extension Development Host" at:
+        // https://vscode-docs.readthedocs.io/en/stable/extensions/testing-extensions/#common-questions
         "${workspaceFolder}/out/test/workspaceSuite",
         "--extensionDevelopmentPath=${workspaceFolder}",
         "--extensionTestsPath=${workspaceFolder}/out/test/workspaceSuite"
