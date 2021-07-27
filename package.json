@@ -1,177 +1,177 @@
 {
-  "name": "cci",
-  "displayName": "CumulusCI",
-  "description": "CumulusCI extension for Visual Studio Code",
-  "version": "0.0.1",
-  "publisher": "CumulusCI",
-  "repository": "https://github.com/SFDO-Tooling/cci-vscode",
-  "engines": {
-    "vscode": "^1.49.0"
-  },
-  "categories": [
-    "Other"
-  ],
-  "activationEvents": [
-    "*"
-  ],
-  "main": "./out/extension.js",
-  "contributes": {
-    "viewsContainers": {
-      "activitybar": [
-        {
-          "id": "cci-explorer",
-          "title": "CumulusCI Explorer",
-          "icon": "media/images/cci-pixel-logo.png"
-        }
-      ]
+    "name": "cci",
+    "displayName": "CumulusCI",
+    "description": "CumulusCI extension for Visual Studio Code",
+    "version": "0.0.1",
+    "publisher": "CumulusCI",
+    "repository": "https://github.com/SFDO-Tooling/cci-vscode",
+    "engines": {
+        "vscode": "^1.58.1"
     },
-    "views": {
-      "cci-explorer": [
-        {
-          "id": "cciOrgView",
-          "name": "Orgs"
+    "categories": [
+        "Other"
+    ],
+    "activationEvents": [
+        "*"
+    ],
+    "main": "./out/extension.js",
+    "contributes": {
+        "viewsContainers": {
+            "activitybar": [
+                {
+                    "id": "cci-explorer",
+                    "title": "CumulusCI Explorer",
+                    "icon": "media/images/cci-pixel-logo.png"
+                }
+            ]
         },
-        {
-          "id": "cciTaskView",
-          "name": "Tasks"
+        "views": {
+            "cci-explorer": [
+                {
+                    "id": "cciOrgView",
+                    "name": "Orgs"
+                },
+                {
+                    "id": "cciTaskView",
+                    "name": "Tasks"
+                },
+                {
+                    "id": "cciFlowView",
+                    "name": "Flows"
+                }
+            ]
         },
-        {
-          "id": "cciFlowView",
-          "name": "Flows"
-        }
-      ]
+        "menus": {
+            "view/title": [
+                {
+                    "group": "navigation",
+                    "when": "view == cciOrgView",
+                    "command": "cci.refreshOrgs"
+                },
+                {
+                    "group": "navigation",
+                    "when": "view == cciTaskView",
+                    "command": "cci.refreshTasks"
+                },
+                {
+                    "group": "navigation",
+                    "when": "view == cciFlowView",
+                    "command": "cci.refreshFlows"
+                }
+            ],
+            "view/item/context": [
+                {
+                    "group": "inline",
+                    "command": "cci.orgOperations",
+                    "when": "view == cciOrgView && viewItem == org"
+                },
+                {
+                    "group": "inline",
+                    "command": "cci.runTask",
+                    "when": "view == cciTaskView && viewItem == task"
+                },
+                {
+                    "group": "inline",
+                    "command": "cci.runFlow",
+                    "when": "view == cciFlowView && viewItem == flow"
+                }
+            ]
+        },
+        "commands": [
+            {
+                "command": "cci.refreshOrgs",
+                "title": "Refresh Orgs",
+                "icon": {
+                    "light": "resources/light/refresh.svg",
+                    "dark": "resources/dark/refresh.svg"
+                }
+            },
+            {
+                "command": "cci.refreshTasks",
+                "title": "Refresh Tasks",
+                "icon": {
+                    "light": "resources/light/refresh.svg",
+                    "dark": "resources/dark/refresh.svg"
+                }
+            },
+            {
+                "command": "cci.refreshFlows",
+                "title": "Refresh Flows",
+                "icon": {
+                    "light": "resources/light/refresh.svg",
+                    "dark": "resources/dark/refresh.svg"
+                }
+            },
+            {
+                "command": "cci.orgOperations",
+                "title": "Operate on an Org",
+                "icon": {
+                    "light": "resources/light/run.svg",
+                    "dark": "resources/dark/run.svg"
+                }
+            },
+            {
+                "command": "cci.runTask",
+                "title": "Run A Task",
+                "icon": {
+                    "light": "resources/light/run.svg",
+                    "dark": "resources/dark/run.svg"
+                }
+            },
+            {
+                "command": "cci.runFlow",
+                "title": "Run A Flow",
+                "icon": {
+                    "light": "resources/light/run.svg",
+                    "dark": "resources/dark/run.svg"
+                }
+            },
+            {
+                "command": "cci.version",
+                "title": "CumulusCI: Version"
+            },
+            {
+                "command": "cci.project.init",
+                "title": "CumulusCI: Initialize a Project"
+            },
+            {
+                "command": "cci.error.gist",
+                "title": "CumulusCI: Share an Error Log"
+            },
+            {
+                "command": "cci.org.connect",
+                "title": "CumulusCI: Connect an Org"
+            },
+            {
+                "command": "cci.service.connect",
+                "title": "CumulusCI: Connect a Service"
+            }
+        ]
     },
-    "menus": {
-      "view/title": [
-        {
-          "group": "navigation",
-          "when": "view == cciOrgView",
-          "command": "cci.refreshOrgs"
-        },
-        {
-          "group": "navigation",
-          "when": "view == cciTaskView",
-          "command": "cci.refreshTasks"
-        },
-        {
-          "group": "navigation",
-          "when": "view == cciFlowView",
-          "command": "cci.refreshFlows"
-        }
-      ],
-      "view/item/context": [
-        {
-          "group": "inline",
-          "command": "cci.orgOperations",
-          "when": "view == cciOrgView && viewItem == org"
-        },
-        {
-          "group": "inline",
-          "command": "cci.runTask",
-          "when": "view == cciTaskView && viewItem == task"
-        },
-        {
-          "group": "inline",
-          "command": "cci.runFlow",
-          "when": "view == cciFlowView && viewItem == flow"
-        }
-      ]
+    "scripts": {
+        "vscode:prepublish": "yarn run compile",
+        "compile": "tsc -p ./",
+        "lint": "eslint src --ext ts",
+        "watch": "tsc -watch -p ./",
+        "pretest": "rm -Rf out/; yarn run compile && yarn run lint",
+        "test": "node ./out/test/runTest.js"
     },
-    "commands": [
-      {
-        "command": "cci.refreshOrgs",
-        "title": "Refresh Orgs",
-        "icon": {
-          "light": "resources/light/refresh.svg",
-          "dark": "resources/dark/refresh.svg"
-        }
-      },
-      {
-        "command": "cci.refreshTasks",
-        "title": "Refresh Tasks",
-        "icon": {
-          "light": "resources/light/refresh.svg",
-          "dark": "resources/dark/refresh.svg"
-        }
-      },
-      {
-        "command": "cci.refreshFlows",
-        "title": "Refresh Flows",
-        "icon": {
-          "light": "resources/light/refresh.svg",
-          "dark": "resources/dark/refresh.svg"
-        }
-      },
-      {
-        "command": "cci.orgOperations",
-        "title": "Operate on an Org",
-        "icon": {
-          "light": "resources/light/run.svg",
-          "dark": "resources/dark/run.svg"
-        }
-      },
-      {
-        "command": "cci.runTask",
-        "title": "Run A Task",
-        "icon": {
-          "light": "resources/light/run.svg",
-          "dark": "resources/dark/run.svg"
-        }
-      },
-      {
-        "command": "cci.runFlow",
-        "title": "Run A Flow",
-        "icon": {
-          "light": "resources/light/run.svg",
-          "dark": "resources/dark/run.svg"
-        }
-      },
-      {
-        "command": "cci.version",
-        "title": "CumulusCI: Version"
-      },
-      {
-        "command": "cci.project.init",
-        "title": "CumulusCI: Initialize a Project"
-      },
-      {
-        "command": "cci.error.gist",
-        "title": "CumulusCI: Share an Error Log"
-      },
-      {
-        "command": "cci.org.connect",
-        "title": "CumulusCI: Connect an Org"
-      },
-      {
-        "command": "cci.service.connect",
-        "title": "CumulusCI: Connect a Service"
-      }
-    ]
-  },
-  "scripts": {
-    "vscode:prepublish": "yarn run compile",
-    "compile": "tsc -p ./",
-    "lint": "eslint src --ext ts",
-    "watch": "tsc -watch -p ./",
-    "pretest": "rm -Rf out/; yarn run compile && yarn run lint",
-    "test": "node ./out/test/runTest.js"
-  },
-  "devDependencies": {
-    "@types/glob": "^7.1.4",
-    "@types/mocha": "^9.0.0",
-    "@types/node": "^16.4.3",
-    "@types/sinon": "^10.0.2",
-    "@types/vscode": "^1.58.1",
-    "@typescript-eslint/eslint-plugin": "^4.28.5",
-    "@typescript-eslint/parser": "^4.28.5",
-    "eslint": "^7.31.0",
-    "glob": "^7.1.7",
-    "mocha": "^9.0.3",
-    "typescript": "^4.3.5",
-    "vscode-test": "^1.6.1"
-  },
-  "dependencies": {
-    "await-exec": "^0.1.2",
-    "sinon": "^11.1.1"
-  }
+    "devDependencies": {
+        "@types/glob": "^7.1.4",
+        "@types/mocha": "^9.0.0",
+        "@types/node": "^16.4.3",
+        "@types/sinon": "^10.0.2",
+        "@types/vscode": "^1.58.1",
+        "@typescript-eslint/eslint-plugin": "^4.28.5",
+        "@typescript-eslint/parser": "^4.28.5",
+        "eslint": "^7.31.0",
+        "glob": "^7.1.7",
+        "mocha": "^9.0.3",
+        "typescript": "^4.3.5",
+        "vscode-test": "^1.6.1"
+    },
+    "dependencies": {
+        "await-exec": "^0.1.2",
+        "sinon": "^11.1.1"
+    }
 }
