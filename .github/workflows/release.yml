@@ -14,8 +14,9 @@ jobs:
             - name: setup node
               uses: actions/setup-node@v2
             - name: install yarn & dependencies
-            - run: npm install yarn
-            - run: yarn
+                run: |
+                  npm install yarn
+                  yarn
             - name: install vsce
               run: npm install -g vsce
             - name: version
