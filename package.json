@@ -137,14 +137,6 @@
             {
                 "command": "cci.error.gist",
                 "title": "CumulusCI: Share an Error Log"
-            },
-            {
-                "command": "cci.org.connect",
-                "title": "CumulusCI: Connect an Org"
-            },
-            {
-                "command": "cci.service.connect",
-                "title": "CumulusCI: Connect a Service"
             }
         ]
     },
