@@ -16,7 +16,7 @@ jobs:
             - name: install Visual Studio Code Extensions
               run: npm install -g vsce
             - name: version
-              run: cat version.txt
+              run: echo "::set-output name=version::$(cat version.txt)"
               id: version
             - name: create release
               env:
