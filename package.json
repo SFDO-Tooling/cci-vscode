@@ -6,10 +6,6 @@
     "publisher": "CumulusCI",
     "repository": "https://github.com/SFDO-Tooling/cci-vscode",
     "icon": "media/images/cci-logo.png",
-    "galleryBanner": {
-        "color": "#FFFFFF",
-        "theme": "dark"
-    },
     "license": "SEE LICENSE FILE",
     "bugs": {
         "url": "https://github.com/SFDO-Tooling/cci-vscode/issues"
