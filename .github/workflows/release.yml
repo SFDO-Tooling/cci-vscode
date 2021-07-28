@@ -19,7 +19,8 @@ jobs:
               run: cat version.txt
               id: version
             - name: create release
-              env: ${{ github.token }}
+              env:
+                  GITHUB_TOKEN: ${{ github.token }}
               uses: actions/create-release@v1
               id: create_release
               with:
@@ -30,7 +31,8 @@ jobs:
                   body_path: CHANGELOG.md
             - name: upload extension binary
               uses: actions/upload-release-asset@v1
-              env: ${{ github.token }}
+              env:
+                  GITHUB_TOKEN: ${{ github.token }}
               with:
                   upload_url: ${{ steps.create_release.outputs.upload_url}}
                   asset_path: cci-${{ steps.version.outputs.version }}.vsix
