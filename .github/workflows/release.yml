@@ -18,6 +18,8 @@ jobs:
             - name: version
               run: echo "::set-output name=version::$(cat version.txt)"
               id: version
+            - name: package extension
+              run: vsce package ${{ steps.version.outputs.version }}
             - name: create release
               env:
                   GITHUB_TOKEN: ${{ github.token }}
@@ -26,7 +28,7 @@ jobs:
               with:
                   draft: false
                   prerelease: false
-                  release_name: ${{ steps.version.outputs.version }}
+                  release_name: v${{ steps.version.outputs.version }}
                   tag_name: v${{ steps.version.outputs.version }}
                   body_path: CHANGELOG.md
             - name: upload extension binary
