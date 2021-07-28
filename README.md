@@ -13,16 +13,15 @@
 
 ## Requirements
 
-This extension requires CumulusCI installed on a your machine for it to
-work. See the [CumulusCI
-documentation](https://cumulusci.readthedocs.io/en/latest/get_started.html#install-cumulusci)
+This extension requires CumulusCI to installed on a your machine.
+See the [CumulusCI documentation](https://cumulusci.readthedocs.io/en/latest/get_started.html#install-cumulusci)
 for help with installation and setup.
 
-## CumulusCI Explorer
+## CumulusCI Explorer View
 
-The CumulusCI Explorer is where users can easily view all tasks and
-flows available to them in a given project, as well as, manage and view
-the status of orgs available to them.
+The CumulusCI Explorer view is where you can easily view all orgs, tasks, and
+flows available within a given project. To access the explorer view click
+on the "CCI" icon on the left-hand sidebar of VS Code.
 
 ### Working with Orgs
 
