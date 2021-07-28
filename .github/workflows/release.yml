@@ -1,0 +1,40 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build_release:
+    runs-on: macos-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: setup node
+        uses: actions/setup-node@v2
+        run: npm install yarn
+        run: yarn
+      - name: install vsce 
+        run: npm install -g vsce
+      - name: version
+        run: cat version.txt 
+        id: version
+      - name: create release
+        env: ${{ github.token }}
+        uses: actions/create_release@v1
+        id: create_release
+        with:
+          draft: false
+          prerelease: false
+          release_name: ${{ steps.version.outputs.version }}
+          tag_name: ${{ steps.version.outputs.version }}
+          body_path: CHANGELOG.md
+      - name: upload extension binary
+        uses: actions/upload-release-asset@v1
+        env: ${{ github.token }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url}}
+          asset_path: cci-${{ steps.version.outputs.version }}.vsix
+          asset_name: cci-${{ steps.version.outputs.version }}.vsix
+          asset_content_type: application/binary 
