@@ -16,7 +16,7 @@ jobs:
             - name: install Visual Studio Code Extensions
               run: |
                   npm install -g yarn
-                  npm install -g vsc
+                  npm install -g vsce
                   yarn
             - name: version
               run: echo "::set-output name=version::$(cat version.txt)"
