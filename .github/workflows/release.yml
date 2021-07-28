@@ -14,7 +14,10 @@ jobs:
             - name: setup node
               uses: actions/setup-node@v2
             - name: install Visual Studio Code Extensions
-              run: npm install -g vsce
+              run: |
+                  npm install -g yarn
+                  npm install -g vsc
+                  yarn
             - name: version
               run: echo "::set-output name=version::$(cat version.txt)"
               id: version
