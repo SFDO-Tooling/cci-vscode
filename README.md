@@ -1,13 +1,17 @@
 <h1 align="center">
-  <br>
+  <br>  
   <!-- TODO: Update link to marketplace listing once published -->
-  <a href="#">
-    <img src="https://raw.githubusercontent.com/SFDO-Tooling/cci-vscode/main/media/images/cci-logo.png?token=ABORMOR55C27ABODDQKRBDDBBG42I">
-  </a>
+    <a href="#">
+      CumulusCI Extension for VS Code 
+    </a>
 </h1>
-
-<h4 align="center">A minimal GUI for working with CumulusCI in Visual Studio Code</h4>
 <br>
+
+A minimal GUI for working with [CumulusCI](https://cumulusci.readthedocs.io/en/latest/intro.html) in Visual Studio Code.
+
+-   View and manage the state of orgs in a CumulusCI project.
+-   Easily launch flows against orgs in a CumulusCI project.
+-   Built-in commands accessible via the command pallette for frequently used operations.
 
 ![Intro](media/intro.gif)
 
