@@ -9,6 +9,8 @@
 <h4 align="center">A minimal GUI for working with CumulusCI in Visual Studio Code</h4>
 <br>
 
+![Intro](media/intro.gif)
+
 ## Requirements
 
 This extension requires CumulusCI installed on a your machine for it to
@@ -50,7 +52,7 @@ various categories. Tasks can be run individually by clicking the
 `Run Task` icon to the right of the task name. This will open up a new
 terminal window with the beginning of the task command already filled
 in. **You will still need to provide any task options that are required
-and hit \`\`ENTER\`\` to execute the task.** Hovering your mouse over
+and press `<ENTER>` to execute the task.** Hovering your mouse over
 an individual task provides a description of the task.
 
 ### Utility CumulusCI Commands
