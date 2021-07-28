@@ -27,7 +27,7 @@ jobs:
                   draft: false
                   prerelease: false
                   release_name: ${{ steps.version.outputs.version }}
-                  tag_name: ${{ steps.version.outputs.version }}
+                  tag_name: v${{ steps.version.outputs.version }}
                   body_path: CHANGELOG.md
             - name: upload extension binary
               uses: actions/upload-release-asset@v1
