@@ -13,11 +13,7 @@ jobs:
               uses: actions/checkout@v2
             - name: setup node
               uses: actions/setup-node@v2
-            - name: install yarn & dependencies
-              run: |
-                  npm install yarn
-                  yarn
-            - name: install vsce
+            - name: install Visual Studio Code Extensions
               run: npm install -g vsce
             - name: version
               run: cat version.txt
