@@ -1,6 +1,10 @@
 ## [Unreleased]
 
--   n/a
+## v0.0.2 - 2021.07.30
+
+### Changed
+
+-   The extension is now compatible with VSCode versions 1.53.0 and later.
 
 ## v0.0.1 - 2021.07.28
 
