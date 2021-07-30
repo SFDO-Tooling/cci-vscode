@@ -1,11 +1,11 @@
 name: Release
 
 on:
-    - push:
-          branches:
-              - main
-          paths:
-              - version.txt
+    push:
+        branches:
+            - main
+        paths:
+            - version.txt
 
 jobs:
     build_release:
